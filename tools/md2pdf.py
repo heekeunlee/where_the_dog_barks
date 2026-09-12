@@ -88,22 +88,134 @@ p + p { margin-top: 0; }
 /* 장면 구분 */
 .sep { text-align: center; margin: 7mm 0; color: #999; letter-spacing: .8em; text-indent: 0; }
 
-/* ---- 삽입 문서 ---- */
+/* ---- 삽입 문서 공통 ---- */
 .doc-wrap { page-break-inside: avoid; margin-top: 10mm; }
-.doc {
-  font-family: 'D2Coding', 'Apple SD Gothic Neo', monospace;
-  font-size: 7.6pt; line-height: 1.62; color: #2a2a2a;
-  white-space: pre; word-break: normal;
-  margin: 0; padding: 5mm 4mm;
-  background: #f6f6f4; border: .4pt solid #d8d8d4;
-  page-break-inside: avoid; overflow: hidden;
-}
 .doc-label {
   font-family: 'Apple SD Gothic Neo', sans-serif;
   font-size: 7pt; font-weight: 400; letter-spacing: .22em;
-  color: #9a9a9a; margin: 0 0 2mm; text-indent: 0;
+  color: #9a9a9a; margin: 0 0 2.5mm; text-indent: 0;
+}
+.doc {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-size: 8pt; line-height: 1.55; color: #1a1a1a;
+  text-align: left; text-indent: 0; word-break: normal;
+  background: #fff; border: .5pt solid #b8b8b8;
+  padding: 0; margin: 0; overflow: hidden;
+}
+.doc * { box-sizing: border-box; }
+.doc .pad { padding: 5mm 5.5mm; }
+.doc table { width: 100%; border-collapse: collapse; font-size: 7.6pt; }
+.doc th, .doc td { border: .4pt solid #c4c4c4; padding: 1.4mm 2mm; text-align: left;
+                   vertical-align: middle; font-weight: 400; }
+.doc th { background: #f2f2f2; font-weight: 500; color: #333; white-space: nowrap; }
+.doc td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.doc td.c { text-align: center; }
+.doc .mono { font-family: 'D2Coding', monospace; font-size: 7.2pt; }
+.doc .sm { font-size: 6.8pt; color: #6a6a6a; }
+.doc .hr { border-top: .4pt solid #d0d0d0; margin: 3mm 0; }
+
+/* 공문 */
+.doc-official .org {
+  text-align: center; font-size: 13pt; font-weight: 300;
+  letter-spacing: .5em; padding: 5mm 0 1mm; color: #111;
+}
+.doc-official .orgline { border-bottom: 1.2pt solid #333; margin: 0 5mm 4mm; }
+.doc-official .fld { display: grid; grid-template-columns: 15mm 1fr; gap: .8mm 0; margin-bottom: 1mm; }
+.doc-official .fld b { font-weight: 500; color: #444; letter-spacing: .3em; }
+.doc-official .subj { font-weight: 600; font-size: 8.6pt; margin: 3.5mm 0 3mm; }
+.doc-official ol { margin: 0 0 3mm; padding-left: 4.5mm; }
+.doc-official li { margin-bottom: 1.5mm; }
+.doc-official .end { text-align: right; margin: 2mm 0 4mm; }
+.doc-official .signer {
+  text-align: center; font-size: 10.5pt; font-weight: 400;
+  letter-spacing: .18em; margin: 2mm 0 1mm; position: relative;
+}
+.doc-official .stamp {
+  display: inline-block; width: 11mm; height: 11mm; margin-left: 2.5mm;
+  border: .9pt solid #b03a30; border-radius: 50%; color: #b03a30;
+  font-size: 4.4pt; line-height: 1.15; text-align: center;
+  letter-spacing: 0; vertical-align: middle; opacity: .78;
+  padding-top: 3.1mm; box-sizing: border-box; font-weight: 600;
+}
+.doc-official .fld span { line-height: 1.5; }
+.doc-official .foot {
+  border-top: .5pt solid #333; margin: 3mm 5mm 0; padding: 2mm 0 4mm;
+  font-size: 6.6pt; color: #666; text-align: center; letter-spacing: .02em;
 }
 
+/* 결재란 — 문서 우측 상단에 별도 블록으로 놓는다 */
+.approve-box { text-align: right; margin: 0 0 3mm; }
+.approve { display: inline-table; border-collapse: collapse; width: auto; }
+.approve th, .approve td { border: .4pt solid #999; width: 12mm; text-align: center; font-size: 6.2pt; padding: .6mm 0; }
+.approve th { height: 4mm; background: #f2f2f2; }
+.approve td { height: 9mm; font-size: 7pt; color: #444; }
+
+/* 사내 메신저 */
+.doc-msg-app { background: #b3c4d4; }
+.doc-msg-app .bar {
+  background: #4a5a6a; color: #fff; padding: 2mm 3mm; font-size: 7.4pt;
+  display: flex; justify-content: space-between;
+}
+.doc-msg-app .room { padding: 3.5mm 3mm; }
+.doc-msg-app .datebar { text-align: center; margin: 1mm 0 3mm; }
+.doc-msg-app .datebar span {
+  background: rgba(0,0,0,.16); color: #fff; font-size: 6.4pt;
+  padding: .6mm 2.5mm; border-radius: 4mm;
+}
+.doc-msg-app .m { margin-bottom: 3mm; display: flex; gap: 1.6mm; align-items: flex-start; }
+.doc-msg-app .av {
+  width: 6mm; height: 6mm; border-radius: 1.6mm; background: #d9dfe5;
+  flex: none; font-size: 5pt; color: #8a96a2; text-align: center; line-height: 6mm;
+}
+.doc-msg-app .who { font-size: 6.6pt; color: #33404d; margin-bottom: .8mm; }
+.doc-msg-app .bub {
+  background: #fff; border-radius: 1mm 3mm 3mm 3mm; padding: 1.8mm 2.6mm;
+  display: inline-block; max-width: 62mm; font-size: 7.6pt; line-height: 1.5;
+}
+.doc-msg-app .meta { font-size: 5.8pt; color: #55636f; margin-left: 1.4mm; align-self: flex-end; }
+.doc-msg-app .meta i { font-style: normal; color: #d98324; font-weight: 600; }
+.doc-msg-app .file {
+  background: #fff; border: .4pt solid #dde3e8; border-radius: 1.5mm;
+  padding: 1.8mm 2.6mm; font-size: 7pt; display: inline-block;
+}
+
+/* 문자 */
+.doc-sms { background: #eef0f3; max-width: 82mm; margin-left: auto; margin-right: auto; }
+.doc-sms .head { padding: 2.5mm 3mm 0; font-size: 6.6pt; color: #7b828a; }
+.doc-sms .b {
+  margin: 2.5mm 3mm 4mm; background: #fff; border-radius: 2mm;
+  padding: 3mm 3.4mm; font-size: 7.8pt; line-height: 1.65;
+}
+
+/* 메일 */
+.doc-mail .mh { background: #f6f7f8; border-bottom: .4pt solid #ddd; padding: 3mm 4mm; }
+.doc-mail .mh .t { font-size: 8.6pt; font-weight: 600; margin-bottom: 2mm; }
+.doc-mail .mh .r { display: grid; grid-template-columns: 13mm 1fr; font-size: 7pt; color: #555; gap: .5mm 0; }
+.doc-mail .mb { padding: 4mm; font-size: 7.8pt; line-height: 1.75; }
+.doc-mail .sig { margin-top: 4mm; padding-top: 2.5mm; border-top: .4pt dashed #ccc; font-size: 6.8pt; color: #777; }
+
+/* 시스템 로그 */
+.doc-log { background: #1e2228; border-color: #1e2228; }
+.doc-log .pad { color: #cfd6dd; }
+.doc-log .mono { font-family: 'D2Coding', monospace; font-size: 7pt; line-height: 1.7; white-space: pre; }
+.doc-log .k { color: #7fb3d5; }
+.doc-log .w { color: #d9a441; }
+
+/* 커뮤니티 게시글 */
+.doc-post .ph { border-bottom: .4pt solid #e2e2e2; padding: 3mm 4mm; }
+.doc-post .ph .app { font-size: 6.6pt; color: #2f7d6e; font-weight: 600; letter-spacing: .04em; }
+.doc-post .ph .t { font-size: 9pt; font-weight: 600; margin: 1.5mm 0 1.5mm; }
+.doc-post .ph .s { font-size: 6.6pt; color: #999; }
+.doc-post .pb { padding: 4mm; font-size: 7.8pt; line-height: 1.8; }
+.doc-post .blur { color: #c9c9c9; letter-spacing: .1em; }
+
+/* 서식/표 문서 */
+.doc-form .ft {
+  text-align: center; font-size: 10pt; font-weight: 500; letter-spacing: .35em;
+  padding: 4mm 0 3mm; border-bottom: 1pt solid #444; margin: 0 5mm 4mm;
+}
+
+/* ---- 합본 표지 ---- */
 /* ---- 합본 표지 ---- */
 .cover { page-break-after: always; padding-top: 55mm; text-align: center; }
 .cover h1 {
@@ -176,7 +288,11 @@ def parse(md: str) -> dict:
         out["blocks"].pop()
 
     for d in docs:
-        out["blocks"].append(("doc", d.strip("\n")))
+        d = d.strip("\n")
+        if d.lstrip().startswith("<"):
+            out["blocks"].append(("html", d))
+        else:
+            out["blocks"].append(("doc", d))
     return out
 
 
@@ -217,9 +333,14 @@ def render_chapter(ch: dict) -> str:
             h.append(
                 '<div class="doc-wrap">'
                 '<div class="doc-label">삽입 문서</div>'
-                f'<div class="doc">{html.escape(text)}</div>'
+                f'<div class="doc"><div class="pad" style="white-space:pre;'
+                'font-family:\'D2Coding\',monospace;font-size:7.4pt">'
+                f'{html.escape(text)}</div></div>'
                 '</div>'
             )
+        elif kind == "html":
+            h.append('<div class="doc-wrap"><div class="doc-label">삽입 문서</div>'
+                     + text + '</div>')
             prev_msg = False
     h.append("</section>")
     return "\n".join(h)
