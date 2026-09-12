@@ -7,8 +7,9 @@
     python3 tools/md2pdf.py --merge 원고/1부/*.md  # 한 권으로 합본
 
 판형 : 신국판 152 x 225mm
-본문 : 나눔명조 10.5pt / 행간 1.9 / 왼끝맞춤 / keep-all
-       (한국어는 브라우저가 자간이 아닌 공백만 늘려 양쪽정렬 시 어절 간격이 벌어진다)
+본문 : 나눔명조 10.5pt / 행간 1.9 / 양쪽맞춤 / 음절 단위 줄바꿈
+       한국 단행본 관행대로 양쪽을 맞추고 어절 중간에서도 줄을 바꾼다.
+       word-break: keep-all 을 쓰면 어절이 안 쪼개져 공백이 벌어지므로 쓰지 않는다.
 의존 : Chrome (헤드리스 인쇄). 별도 설치 불필요.
 """
 import html
@@ -30,9 +31,12 @@ body {
   font-size: 10.5pt;
   line-height: 1.9;
   color: #111;
-  text-align: left;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  text-align: justify;
+  text-justify: inter-character;
+  word-break: normal;
+  line-break: strict;
+  overflow-wrap: normal;
+  hanging-punctuation: allow-end;
   -webkit-font-smoothing: antialiased;
 }
 
