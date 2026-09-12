@@ -71,6 +71,16 @@ p + p { margin-top: 0; }
   page-break-inside: avoid;
 }
 
+/* 시각 표시 (## 02:00) */
+.timemark {
+  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-size: 9pt; font-weight: 300; letter-spacing: .3em;
+  color: #6a6a6a; text-indent: 0;
+  margin: 9mm 0 5mm; padding-bottom: 2mm;
+  border-bottom: .4pt solid #d0d0d0;
+  page-break-after: avoid; page-break-inside: avoid;
+}
+
 /* 장면 구분 */
 .sep { text-align: center; margin: 7mm 0; color: #999; letter-spacing: .8em; text-indent: 0; }
 
@@ -145,12 +155,21 @@ def parse(md: str) -> dict:
         if not s:
             continue
         if set(s) <= set("-") and len(s) >= 3:
+            # 제목 아래 첫 구분선과 연속 구분선은 버린다
+            if not out["blocks"] or out["blocks"][-1][0] == "sep":
+                continue
             out["blocks"].append(("sep", ""))
+            continue
+        if s.startswith("## "):
+            out["blocks"].append(("time", s[3:].strip()))
             continue
         if s.startswith("**") and s.endswith("**") and s.count("**") == 2:
             out["blocks"].append(("msg", s[2:-2].strip()))
             continue
         out["blocks"].append(("p", s))
+
+    while out["blocks"] and out["blocks"][-1][0] == "sep":
+        out["blocks"].pop()
 
     for d in docs:
         out["blocks"].append(("doc", d.strip("\n")))
@@ -184,7 +203,11 @@ def render_chapter(ch: dict) -> str:
             else:
                 h.append(f'<div class="msg">{inline(text)}</div>')
             prev_msg = True
+        elif kind == "time":
+            h.append(f'<div class="timemark">{html.escape(text)}</div>')
+            prev_msg = False
         elif kind == "sep":
+            h.append('<p class="sep">·   ·   ·</p>')
             prev_msg = False
         elif kind == "doc":
             h.append(
