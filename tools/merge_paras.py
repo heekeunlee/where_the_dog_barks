@@ -15,7 +15,7 @@ import io, re, sys
 
 MAXLEN = 200      # 합친 문단 최대 길이
 RUNMAX = 4        # 한 번에 합칠 문장 수
-PUNCH  = 13       # 이보다 짧으면 타격 문장으로 보고 남긴다
+PUNCH  = 9        # 이보다 짧으면 타격 문장으로 보고 남긴다
 
 def kind(l):
     s = l.strip()
@@ -73,7 +73,6 @@ def merge(md):
             nxt = lines[li+2].strip() if (li+2 < len(lines) and kind(lines[li+2])=='para') else ''
             protect = (len(t) < PUNCH
                        or nsent(t) > 3
-                       or next_is_dial
                        or idx == 0 and li >= 2 and kind(lines[li-2]) in ('sep','head','bold')
                        or li+2 >= len(lines))
             if protect:
@@ -81,7 +80,8 @@ def merge(md):
                 buf.append(t); continue
             if not cur:
                 cur = t
-            elif opens_new(t):
+            elif opens_new(t) and not (len(cur) <= 34 and len(t) <= 34
+                                       and len(cur) + 1 + len(t) <= 70):
                 buf.append(cur); cur = t
             elif len(cur) + 1 + len(t) <= MAXLEN and cur.count('。')+cur.count('.') < RUNMAX:
                 cur = cur + ' ' + t
