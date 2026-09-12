@@ -265,8 +265,10 @@ def main() -> None:
 
     if merge:
         chapters = [parse(p.read_text(encoding="utf-8")) for p in sorted(paths)]
-        tmp.write_text(build_html(chapters, cover="제1부 대기업"), encoding="utf-8")
-        pdf = outdir / "1부_합본.pdf"
+        part = sorted(paths)[0].parent.name or "합본"
+        covers = {"1부": "제1부 대기업", "2부": "제2부 중소기업", "3부": "제3부 알바·취준"}
+        tmp.write_text(build_html(chapters, cover=covers.get(part, part)), encoding="utf-8")
+        pdf = outdir / f"{part}_합본.pdf"
         to_pdf(tmp.resolve(), pdf.resolve())
         print(f"{pdf}  ({len(chapters)}화 합본, {pdf.stat().st_size:,} bytes)")
     else:
