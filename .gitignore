@@ -3,3 +3,4 @@
 *.swp
 .claude/
 .md2pdf.tmp.html
+.book.tmp/
