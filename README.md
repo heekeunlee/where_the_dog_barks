@@ -139,6 +139,8 @@
 
 ## 표지 디자인
 
+[페이퍼백 수정안 9종](design/cover-concepts/paperback/README.md) — 책등 축소, 이희근·짜임 표기, 뒷표지 줄거리 소개 반영.
+
 [표지 시안 9종 전체 보기](design/cover-concepts/README.md) — 앞표지·뒷표지·책등·날개 콘셉트와 PNG 원본을 모았습니다.
 
 ## 원고 조판
