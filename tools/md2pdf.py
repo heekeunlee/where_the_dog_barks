@@ -217,15 +217,21 @@ p + p { margin-top: 0; }
 
 /* ---- 합본 표지 ---- */
 /* ---- 합본 표지 ---- */
-.cover { page-break-after: always; padding-top: 55mm; text-align: center; }
+.cover { page-break-after: always; padding-top: 52mm; text-align: center; }
+.cover .cv-no {
+  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-size: 9.5pt; font-weight: 300; color: #8a8a8a;
+  letter-spacing: .34em; margin-bottom: 11mm;
+}
 .cover h1 {
   font-family: 'Nanum Myeongjo', 'AppleMyungjo', serif;
-  font-size: 26pt; font-weight: 400; margin: 0; letter-spacing: .02em;
+  font-size: 21pt; font-weight: 400; margin: 0;
+  letter-spacing: .02em; line-height: 1.78;
 }
 .cover .cv-sub {
   font-family: 'Apple SD Gothic Neo', sans-serif;
   font-size: 9pt; font-weight: 300; color: #7a7a7a;
-  margin-top: 8mm; letter-spacing: .18em;
+  margin-top: 13mm; letter-spacing: .18em;
 }
 """
 
@@ -346,16 +352,20 @@ def render_chapter(ch: dict) -> str:
     return "\n".join(h)
 
 
-def build_html(chapters: list, cover: str = "") -> str:
+def build_html(chapters: list, cover=None) -> str:
+    """cover 는 (부 번호, 장소, 사람) 세 칸. 없으면 표지를 붙이지 않는다."""
+    title = " ".join(cover) if cover else chapters[0]["title"]
     parts = [
         "<!doctype html><html lang=ko><head><meta charset=utf-8>",
-        f"<title>{html.escape(cover or chapters[0]['title'])}</title>",
+        f"<title>{html.escape(title)}</title>",
         f"<style>{CSS}</style></head><body>",
     ]
     if cover:
+        no, place, who = cover
         parts.append(
             '<section class="cover">'
-            f"<h1>{html.escape(cover)}</h1>"
+            f'<div class="cv-no">{html.escape(no)}</div>'
+            f"<h1>{html.escape(place)}<br>{html.escape(who)}</h1>"
             '<div class="cv-sub">어디서 개가 짖는구나</div>'
             "</section>"
         )
@@ -391,8 +401,12 @@ def main() -> None:
     if merge:
         chapters = [parse(p.read_text(encoding="utf-8")) for p in sorted(paths)]
         part = sorted(paths)[0].parent.name or "합본"
-        covers = {"1부": "제1부 대기업", "2부": "제2부 중소기업", "3부": "제3부 알바·취준"}
-        tmp.write_text(build_html(chapters, cover=covers.get(part, part)), encoding="utf-8")
+        covers = {
+            "1부": ("제 1 부", "묵산타워 15층,", "김민지 대리"),
+            "2부": ("제 2 부", "율목정밀,", "윤소라 사무직"),
+            "3부": ("제 3 부", "야간 라인,", "14번"),
+        }
+        tmp.write_text(build_html(chapters, cover=covers.get(part)), encoding="utf-8")
         pdf = outdir / f"{part}_합본.pdf"
         to_pdf(tmp.resolve(), pdf.resolve())
         print(f"{pdf}  ({len(chapters)}화 합본, {pdf.stat().st_size:,} bytes)")
