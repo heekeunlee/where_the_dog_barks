@@ -137,8 +137,34 @@ def locate(pdf: Path, groups, back=None):
     return found, len(pages)
 
 
+def make_recto(pdf: Path, found, n_front: int):
+    """부 도비라와 작가의 말이 왼쪽 면에 걸리면 앞에 백면을 끼운다.
+
+    Chrome 은 page-break-before: right 를 무시하므로 조판 뒤에 처리한다.
+    끼운 백면도 쪽수는 세지만 번호는 찍지 않는다.
+    """
+    shift, blanks, adj = 0, [], []
+    for kind, key, name, page in found:
+        p = page + shift
+        if kind in ("part", "back") and (n_front + p + 1) % 2 == 0:
+            blanks.append(p)
+            shift += 1
+            p += 1
+        adj.append((kind, key, name, p))
+    if blanks:
+        doc = fitz.open(pdf)
+        w, h = doc[0].rect.width, doc[0].rect.height
+        for i in blanks:
+            doc.new_page(pno=i, width=w, height=h)
+        tmp = pdf.with_suffix(".recto.pdf")
+        doc.save(tmp, garbage=0)
+        doc.close()
+        tmp.replace(pdf)
+    return adj, blanks
+
+
 def stamp(pdf: Path, part_pages: set):
-    """본문 하단 중앙에 쪽번호. 부 도비라는 건너뛴다(번호는 센다)."""
+    """본문 하단 중앙에 쪽번호. 부 도비라와 백면은 건너뛴다(번호는 센다)."""
     doc = fitz.open(pdf)
     font = fitz.Font(fontfile=SERIF) if Path(SERIF).exists() else fitz.Font("times")
     size, y = 8.5, 225 * 72 / 25.4 - 11 * 72 / 25.4     # 아래에서 11mm
@@ -203,7 +229,10 @@ def main() -> None:
     to_pdf(body_html.resolve(), body_pdf.resolve())
 
     found, n_pages = locate(body_pdf, groups, back)
-    stamp(body_pdf, {p for k, _, _, p in found if k == "part"})
+    found, blanks = make_recto(body_pdf, found, n_front=4)
+    n_pages += len(blanks)
+    skip = {p for k, _, _, p in found if k == "part"} | set(blanks)
+    stamp(body_pdf, skip)
 
     front_html.write_text(build_front_html(found), encoding="utf-8")
     to_pdf(front_html.resolve(), front_pdf.resolve())
@@ -211,6 +240,7 @@ def main() -> None:
     book = fitz.open(front_pdf)
     body = fitz.open(body_pdf)
     n_front = book.page_count
+    assert n_front == 4, f"앞붙이가 4면이 아니면 홀수 면 계산이 어긋난다: {n_front}"
     book.insert_pdf(body)
 
     # PDF 뷰어 북마크
@@ -231,7 +261,8 @@ def main() -> None:
     print(f"  앞붙이 {n_front}면(속표지·백면·차례) + 본문 {n_pages}면 = {total}면")
     bp = [pg for k, _, _, pg in found if k == "back"]
     tail = f" · 작가의 말 {n_pages - bp[0]}면" if bp else ""
-    print(f"  {n_ch}화{tail} · 부 도비라 3면은 쪽번호 없음 · 북마크 {len(toc)}개")
+    nb = f" · 백면 {len(blanks)}면 삽입" if blanks else ""
+    print(f"  {n_ch}화{tail}{nb} · 부 도비라 3면은 쪽번호 없음 · 북마크 {len(toc)}개")
 
 
 if __name__ == "__main__":

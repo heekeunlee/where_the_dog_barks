@@ -29,7 +29,7 @@ html, body { margin: 0; padding: 0; }
 body {
   font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Apple SD Gothic Neo', serif;
   font-size: 10.5pt;
-  line-height: 1.9;
+  line-height: 2.1;
   color: #111;
   text-align: justify;
   text-justify: inter-character;
@@ -52,7 +52,7 @@ body {
 .ch-title {
   font-family: 'Apple SD Gothic Neo', sans-serif;
   font-size: 20pt; font-weight: 200; letter-spacing: -.01em;
-  line-height: 1.35; color: #111; margin: 0;
+  line-height: 2.1; color: #111; margin: 0;
 }
 .ch-sub {
   font-family: 'Apple SD Gothic Neo', sans-serif;
