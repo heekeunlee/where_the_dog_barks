@@ -46,7 +46,9 @@ body {
 /* ---- 장 도비라 ---- */
 .chapter { page-break-before: always; }
 .chapter:first-of-type { page-break-before: avoid; }
-.ch-head { margin: 8mm 0 14mm; }
+/* 화 첫 면은 위를 크게 비운다. 도비라를 따로 두지 않으면서
+   「새로 시작한다」는 신호를 주고, 본문은 같은 면에서 이어져 리듬이 끊기지 않는다 */
+.ch-head { margin: 46mm 0 16mm; }
 .ch-no {
   font-family: 'Nanum Gothic', sans-serif;
   font-size: 8.5pt; font-weight: 300; letter-spacing: .32em;
