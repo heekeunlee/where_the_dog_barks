@@ -22,12 +22,15 @@ CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 CSS = """
 @page { size: 152mm 225mm; margin: 20mm 16mm 18mm; }
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
+/* 무선제본 대비 — 안쪽(책등) 19mm / 바깥 14mm. 1면이 오른쪽 면이다 */
+@page :right { margin-left: 19mm; margin-right: 14mm; }
+@page :left  { margin-left: 14mm; margin-right: 19mm; }
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Gothic:wght@400;700;800&display=swap');
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Apple SD Gothic Neo', serif;
+  font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Nanum Gothic', serif;
   font-size: 10.5pt;
   line-height: 2.1;
   color: #111;
@@ -45,17 +48,17 @@ body {
 .chapter:first-of-type { page-break-before: avoid; }
 .ch-head { margin: 8mm 0 14mm; }
 .ch-no {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 8.5pt; font-weight: 300; letter-spacing: .32em;
   color: #8a8a8a; margin-bottom: 5mm;
 }
 .ch-title {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 20pt; font-weight: 200; letter-spacing: -.01em;
   line-height: 2.1; color: #111; margin: 0;
 }
 .ch-sub {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 8.5pt; font-weight: 300; color: #7a7a7a;
   margin-top: 4mm; letter-spacing: .04em;
 }
@@ -69,7 +72,7 @@ p + p { margin-top: 0; }
 /* 화면에 뜬 메시지 */
 .msg {
   margin: 4mm 0 4mm 2em;
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 9.5pt; font-weight: 500; line-height: 1.65;
   color: #111; text-indent: 0; letter-spacing: -.01em;
   page-break-inside: avoid;
@@ -77,7 +80,7 @@ p + p { margin-top: 0; }
 
 /* 시각 표시 (## 02:00) */
 .timemark {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 9pt; font-weight: 300; letter-spacing: .3em;
   color: #6a6a6a; text-indent: 0;
   margin: 9mm 0 5mm; padding-bottom: 2mm;
@@ -91,12 +94,12 @@ p + p { margin-top: 0; }
 /* ---- 삽입 문서 공통 ---- */
 .doc-wrap { page-break-inside: avoid; margin-top: 10mm; }
 .doc-label {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 7pt; font-weight: 400; letter-spacing: .22em;
   color: #9a9a9a; margin: 0 0 2.5mm; text-indent: 0;
 }
 .doc {
-  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-family: 'Nanum Gothic', 'Malgun Gothic', sans-serif;
   font-size: 8pt; line-height: 1.55; color: #1a1a1a;
   text-align: left; text-indent: 0; word-break: normal;
   background: #fff; border: .5pt solid #b8b8b8;
@@ -217,9 +220,11 @@ p + p { margin-top: 0; }
 
 /* ---- 합본 표지 ---- */
 /* ---- 합본 표지 ---- */
-.cover { page-break-after: always; padding-top: 52mm; text-align: center; }
+.blank-page { page-break-before: always; page-break-after: always; min-height: 150mm; }
+.cover { page-break-before: always; page-break-after: always;
+         padding-top: 52mm; text-align: center; }
 .cover .cv-no {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 9.5pt; font-weight: 300; color: #8a8a8a;
   letter-spacing: .34em; margin-bottom: 11mm;
 }
@@ -229,7 +234,7 @@ p + p { margin-top: 0; }
   letter-spacing: .02em; line-height: 1.78;
 }
 .cover .cv-sub {
-  font-family: 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Nanum Gothic', sans-serif;
   font-size: 9pt; font-weight: 300; color: #7a7a7a;
   margin-top: 13mm; letter-spacing: .18em;
 }

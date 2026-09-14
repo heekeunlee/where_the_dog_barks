@@ -44,14 +44,16 @@ SERIF = "/System/Library/Fonts/Supplemental/AppleMyungjo.ttf"
 
 FRONT_CSS = """
 @page { size: 152mm 225mm; margin: 20mm 16mm 18mm; }
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
+@page :right { margin-left: 19mm; margin-right: 14mm; }
+@page :left  { margin-left: 14mm; margin-right: 19mm; }
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap');
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0;
   font-family: 'Nanum Myeongjo', 'AppleMyungjo', serif; color: #111; }
 
 .title-page { page-break-after: always; padding-top: 78mm; text-align: center; }
 .title-page h1 { font-size: 27pt; font-weight: 400; margin: 0; letter-spacing: .06em; }
-.title-page .sub { margin-top: 14mm; font-family: 'Apple SD Gothic Neo', sans-serif;
+.title-page .sub { margin-top: 14mm; font-family: 'Nanum Gothic', sans-serif;
   font-size: 9pt; font-weight: 300; color: #7a7a7a; letter-spacing: .3em; }
 
 .blank { page-break-after: always; }
@@ -62,7 +64,7 @@ html, body { margin: 0; padding: 0;
 
 .toc-part { display: flex; align-items: baseline; margin: 8mm 0 3.5mm;
   font-size: 10.5pt; }
-.toc-part .no { font-family: 'Apple SD Gothic Neo', sans-serif; font-size: 8pt;
+.toc-part .no { font-family: 'Nanum Gothic', sans-serif; font-size: 8pt;
   color: #8a8a8a; letter-spacing: .24em; margin-right: 4mm; white-space: nowrap; }
 .toc-part .nm { font-weight: 700; }
 
@@ -93,14 +95,21 @@ def cover_html(no: str, place: str, who: str) -> str:
             "</section>")
 
 
-def build_body_html(groups, back=None) -> str:
+BLANK = '<section class="blank-page">&#160;</section>'
+
+
+def build_body_html(groups, back=None, blanks=frozenset()) -> str:
     out = ["<!doctype html><html lang=ko><head><meta charset=utf-8>",
            f"<title>{html.escape(TITLE)}</title>",
            f"<style>{CSS}</style></head><body>"]
     for cover, chs in groups:
+        if ("part", cover[0]) in blanks:
+            out.append(BLANK)
         out.append(cover_html(*cover))
         out += [render_chapter(c) for c in chs]
     if back:
+        if ("back", back["title"]) in blanks:
+            out.append(BLANK)
         out.append(render_chapter(back))
     out.append("</body></html>")
     return "\n".join(out)
@@ -137,30 +146,46 @@ def locate(pdf: Path, groups, back=None):
     return found, len(pages)
 
 
-def make_recto(pdf: Path, found, n_front: int):
-    """부 도비라와 작가의 말이 왼쪽 면에 걸리면 앞에 백면을 끼운다.
+def render_recto(groups, back, body_html: Path, body_pdf: Path, n_front: int):
+    """부 도비라와 작가의 말이 오른쪽(홀수) 면에서 시작하도록 백면을 넣고 다시 조판한다.
 
-    Chrome 은 page-break-before: right 를 무시하므로 조판 뒤에 처리한다.
-    끼운 백면도 쪽수는 세지만 번호는 찍지 않는다.
+    Chrome 은 page-break-before: right 를 무시한다. 그리고 조판을 끝낸 뒤에
+    백면을 끼우면 그 뒤 페이지의 홀짝이 뒤집혀 안쪽·바깥쪽 여백이 반대로 간다.
+    그래서 HTML 단계에서 넣는다.
+
+    백면은 페이지를 하나 더할 뿐 본문을 흘려보내지 않으므로,
+    백면 없이 한 번 조판해 위치를 재면 필요한 자리를 한 번에 계산할 수 있다.
     """
-    shift, blanks, adj = 0, [], []
+    def bake(blanks):
+        body_html.write_text(build_body_html(groups, back, blanks), encoding="utf-8")
+        to_pdf(body_html.resolve(), body_pdf.resolve())
+        return locate(body_pdf, groups, back)
+
+    found, n_pages = bake(frozenset())
+
+    key_of = {}
+    for cov, _ in groups:
+        key_of[norm(cov[0])] = ("part", cov[0])
+    if back:
+        key_of[norm(back["title"])] = ("back", back["title"])
+
+    blanks, cum = set(), 0
     for kind, key, name, page in found:
-        p = page + shift
-        if kind in ("part", "back") and (n_front + p + 1) % 2 == 0:
-            blanks.append(p)
-            shift += 1
-            p += 1
-        adj.append((kind, key, name, p))
-    if blanks:
-        doc = fitz.open(pdf)
-        w, h = doc[0].rect.width, doc[0].rect.height
-        for i in blanks:
-            doc.new_page(pno=i, width=w, height=h)
-        tmp = pdf.with_suffix(".recto.pdf")
-        doc.save(tmp, garbage=0)
-        doc.close()
-        tmp.replace(pdf)
-    return adj, blanks
+        if kind not in ("part", "back"):
+            continue
+        if (n_front + page + cum + 1) % 2 == 0:     # 왼쪽 면에 걸린다
+            blanks.add(key_of[key])
+            cum += 1
+
+    if not blanks:
+        return found, n_pages
+
+    found, n_pages = bake(frozenset(blanks))
+    bad = [n for k, _, n, pg in found
+           if k in ("part", "back") and (n_front + pg + 1) % 2 == 0]
+    if bad:
+        raise SystemExit(f"백면을 넣었는데도 왼쪽 면에 남음: {bad}")
+    return found, n_pages
 
 
 def stamp(pdf: Path, part_pages: set):
@@ -225,12 +250,10 @@ def main() -> None:
     body_html, body_pdf = tmpdir / "body.html", tmpdir / "body.pdf"
     front_html, front_pdf = tmpdir / "front.html", tmpdir / "front.pdf"
 
-    body_html.write_text(build_body_html(groups, back), encoding="utf-8")
-    to_pdf(body_html.resolve(), body_pdf.resolve())
-
-    found, n_pages = locate(body_pdf, groups, back)
-    found, blanks = make_recto(body_pdf, found, n_front=4)
-    n_pages += len(blanks)
+    found, n_pages = render_recto(groups, back, body_html, body_pdf, n_front=4)
+    doc = fitz.open(body_pdf)
+    blanks = [i for i in range(doc.page_count) if not doc[i].get_text().strip()]
+    doc.close()
     skip = {p for k, _, _, p in found if k == "part"} | set(blanks)
     stamp(body_pdf, skip)
 
