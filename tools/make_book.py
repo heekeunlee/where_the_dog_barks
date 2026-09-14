@@ -8,7 +8,7 @@
 
 구성:
     속표지 → 백면 → 차례(2면) → 제1부 도비라 → 12화 → 제2부 도비라 → 10화
-    → 제3부 도비라 → 10화
+    → 제3부 도비라 → 10화 → 작가의 말
 
 쪽번호:
     본문 첫 면부터 1로 세고, 하단 중앙에 찍는다.
@@ -37,6 +37,8 @@ PARTS = [
     ("2부", ("제 2 부", "율목정밀,", "윤소라 사무직")),
     ("3부", ("제 3 부", "야간 라인,", "14번")),
 ]
+
+BACK_MD = ROOT / "원고" / "작가의_말.md"      # 뒷붙이. 본문 쪽번호를 이어 받는다
 
 SERIF = "/System/Library/Fonts/Supplemental/AppleMyungjo.ttf"
 
@@ -91,13 +93,15 @@ def cover_html(no: str, place: str, who: str) -> str:
             "</section>")
 
 
-def build_body_html(groups) -> str:
+def build_body_html(groups, back=None) -> str:
     out = ["<!doctype html><html lang=ko><head><meta charset=utf-8>",
            f"<title>{html.escape(TITLE)}</title>",
            f"<style>{CSS}</style></head><body>"]
     for cover, chs in groups:
         out.append(cover_html(*cover))
         out += [render_chapter(c) for c in chs]
+    if back:
+        out.append(render_chapter(back))
     out.append("</body></html>")
     return "\n".join(out)
 
@@ -106,7 +110,7 @@ def norm(s: str) -> str:
     return re.sub(r"\s+", "", s)
 
 
-def locate(pdf: Path, groups):
+def locate(pdf: Path, groups, back=None):
     """부 도비라와 각 화가 시작하는 물리 면 번호(0부터)를 찾는다."""
     doc = fitz.open(pdf)
     pages = [norm(doc[i].get_text()) for i in range(doc.page_count)]
@@ -117,6 +121,9 @@ def locate(pdf: Path, groups):
         want.append(("part", norm(cover[0]), f"{cover[1]} {cover[2]}"))
         for c in chs:
             want.append(("ch", norm(c["no"]), c["title"]))
+
+    if back:
+        want.append(("back", norm(back["title"]), back["title"]))
 
     found, at, i = [], 0, 0
     for kind, key, name in want:
@@ -157,10 +164,10 @@ def stamp(pdf: Path, part_pages: set):
 def build_front_html(found) -> str:
     rows = []
     for kind, key, name, page in found:
-        if kind == "part":
+        if kind in ("part", "back"):
             rows.append(
                 '<div class="toc-part">'
-                f'<span class="no">{html.escape(key[:2] + " " + key[2:])}</span>'
+                f'<span class="no">{html.escape(key[:2] + " " + key[2:]) if kind == "part" else ""}</span>'
                 f'<span class="nm">{html.escape(name)}</span>'
                 '<span class="dots"></span>'
                 f'<span class="pg">{page + 1}</span></div>')
@@ -185,16 +192,17 @@ def build_front_html(found) -> str:
 
 def main() -> None:
     groups = [(cover, chapters_of(part)) for part, cover in PARTS]
+    back = parse(BACK_MD.read_text(encoding="utf-8")) if BACK_MD.exists() else None
     n_ch = sum(len(c) for _, c in groups)
     tmpdir = ROOT / ".book.tmp"
     tmpdir.mkdir(exist_ok=True)
     body_html, body_pdf = tmpdir / "body.html", tmpdir / "body.pdf"
     front_html, front_pdf = tmpdir / "front.html", tmpdir / "front.pdf"
 
-    body_html.write_text(build_body_html(groups), encoding="utf-8")
+    body_html.write_text(build_body_html(groups, back), encoding="utf-8")
     to_pdf(body_html.resolve(), body_pdf.resolve())
 
-    found, n_pages = locate(body_pdf, groups)
+    found, n_pages = locate(body_pdf, groups, back)
     stamp(body_pdf, {p for k, _, _, p in found if k == "part"})
 
     front_html.write_text(build_front_html(found), encoding="utf-8")
@@ -208,8 +216,8 @@ def main() -> None:
     # PDF 뷰어 북마크
     toc = []
     for kind, key, name, page in found:
-        toc.append([1 if kind == "part" else 2,
-                    name if kind == "part" else f"{key} {name}",
+        toc.append([1 if kind in ("part", "back") else 2,
+                    name if kind in ("part", "back") else f"{key} {name}",
                     n_front + page + 1])
     book.set_toc(toc)
     book.set_metadata({"title": TITLE, "subject": SUBTITLE, "author": ""})
@@ -221,7 +229,9 @@ def main() -> None:
 
     print(f"{OUT}")
     print(f"  앞붙이 {n_front}면(속표지·백면·차례) + 본문 {n_pages}면 = {total}면")
-    print(f"  {n_ch}화 · 부 도비라 3면은 쪽번호 없음 · 북마크 {len(toc)}개")
+    bp = [pg for k, _, _, pg in found if k == "back"]
+    tail = f" · 작가의 말 {n_pages - bp[0]}면" if bp else ""
+    print(f"  {n_ch}화{tail} · 부 도비라 3면은 쪽번호 없음 · 북마크 {len(toc)}개")
 
 
 if __name__ == "__main__":
