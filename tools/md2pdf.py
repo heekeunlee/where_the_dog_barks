@@ -276,36 +276,37 @@ def parse(md: str) -> dict:
     # 코드펜스(삽입 문서) 분리
     fence = chr(96) * 3
     parts = body.split(fence)
-    prose, docs = parts[0], parts[1::2]
 
-    for raw in prose.split("\n"):
-        t = raw.rstrip()
-        s = t.strip()
-        if not s:
+    # 본문과 삽입 문서를 원고 순서대로 섞는다 (짝수 = 본문, 홀수 = 문서)
+    for k, part in enumerate(parts):
+        if k % 2:
+            d = part.strip("\n")
+            out["blocks"].append(("html" if d.lstrip().startswith("<") else "doc", d))
             continue
-        if set(s) <= set("-") and len(s) >= 3:
-            # 제목 아래 첫 구분선과 연속 구분선은 버린다
-            if not out["blocks"] or out["blocks"][-1][0] == "sep":
+        for raw in part.split("\n"):
+            t = raw.rstrip()
+            s = t.strip()
+            if not s:
                 continue
-            out["blocks"].append(("sep", ""))
-            continue
-        if s.startswith("## "):
-            out["blocks"].append(("time", s[3:].strip()))
-            continue
-        if s.startswith("**") and s.endswith("**") and s.count("**") == 2:
-            out["blocks"].append(("msg", s[2:-2].strip()))
-            continue
-        out["blocks"].append(("p", s))
+            if set(s) <= set("-") and len(s) >= 3:
+                # 제목 아래 첫 구분선과 연속 구분선, 문서 바로 앞뒤 구분선은 버린다
+                if not out["blocks"] or out["blocks"][-1][0] in ("sep", "html", "doc"):
+                    continue
+                out["blocks"].append(("sep", ""))
+                continue
+            if s.startswith("## "):
+                if out["blocks"] and out["blocks"][-1][0] == "sep":
+                    out["blocks"].pop()
+                out["blocks"].append(("time", s[3:].strip()))
+                continue
+            if s.startswith("**") and s.endswith("**") and s.count("**") == 2:
+                out["blocks"].append(("msg", s[2:-2].strip()))
+                continue
+            out["blocks"].append(("p", s))
+        # 문서 바로 앞의 구분선은 버린다
+        while out["blocks"] and out["blocks"][-1][0] == "sep":
+            out["blocks"].pop()
 
-    while out["blocks"] and out["blocks"][-1][0] == "sep":
-        out["blocks"].pop()
-
-    for d in docs:
-        d = d.strip("\n")
-        if d.lstrip().startswith("<"):
-            out["blocks"].append(("html", d))
-        else:
-            out["blocks"].append(("doc", d))
     return out
 
 
