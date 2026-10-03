@@ -1,738 +1,410 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>어디서 개가 짖는구나</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
-
 <style>
+/* 밝은 화면 고정. layout: 결재 서류 한 장 — 가운데 종이, 시간선 A·B·C는 세 색의 띠로 구분 */
 :root{
+  --paper:#EDEFF2; --surface:#FFFFFF; --surface-2:#F4F6F8;
+  --ink:#191F27; --ink-2:#5B646F; --ink-3:#8B939E;
+  --rule:#C9CED5; --rule-soft:#DDE1E6;
+  --t1:#3E5C76; --t2:#8A5233; --t3:#4C5059;
+  --t1-wash:#3E5C7614; --t2-wash:#8A523314; --t3-wash:#4C505914;
+  --stamp:#A8332B; --stamp-wash:#A8332B12; --on-ink:#FFFFFF;
   color-scheme:light;
-  --paper:#EDEFF2;
-  --surface:#FFFFFF;
-  --surface-2:#F4F6F8;
-  --ink:#191F27;
-  --ink-2:#5B646F;
-  --ink-3:#8B939E;
-  --rule:#C9CED5;
-  --rule-soft:#DDE1E6;
-  --t1:#3E5C76;
-  --t2:#8A5233;
-  --t3:#4C5059;
-  --t1-wash:#3E5C7612;
-  --t2-wash:#8A523312;
-  --t3-wash:#4C505912;
-  --stamp:#A8332B;
-  --stamp-wash:#A8332B10;
-  --ghost:0.34;
   --display:"Song Myung","Nanum Myeongjo",serif;
   --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --mono:"IBM Plex Mono","SFMono-Regular",ui-monospace,monospace;
 }
 *{box-sizing:border-box}
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--body);
-  font-weight:300;
-  font-size:15px;
-  line-height:1.75;
-  margin:0;
-  padding-block:0;
-  padding-inline:16px;
-  -webkit-font-smoothing:antialiased;
-}
-.sheet{
-  max-width:800px;
-  margin:0 auto;
-  background:var(--surface);
-  border-left:1px solid var(--rule-soft);
-  border-right:1px solid var(--rule-soft);
-  padding-block:0 72px;
-  padding-inline:clamp(18px,5vw,56px);
-}
-@media (max-width:520px){ body{padding-inline:0} .sheet{border-left:0;border-right:0} }
-
-/* ---- masthead ---- */
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-weight:300;font-size:15px;line-height:1.75;margin:0;padding-block:0;padding-inline:16px;-webkit-font-smoothing:antialiased}
+.sheet{max-width:820px;margin:0 auto;background:var(--surface);border-inline:1px solid var(--rule-soft);padding-block:0 72px;padding-inline:clamp(18px,5vw,56px)}
+@media (max-width:520px){body{padding-inline:0}.sheet{border-inline:0}}
 .mast{padding-block:40px 0}
-.doc-meta{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.04em;
-  color:var(--ink-3);
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px 20px;
-  padding-bottom:14px;
-  border-bottom:1px solid var(--ink);
-}
+.doc-meta{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:4px 20px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
 .doc-meta b{font-weight:500;color:var(--ink-2)}
-h1{
-  font-family:var(--display);
-  font-weight:400;
-  font-size:clamp(38px,8.5vw,64px);
-  line-height:1.08;
-  letter-spacing:-.01em;
-  text-wrap:balance;
-  margin:26px 0 0;
-}
-.sub{
-  font-family:var(--mono);
-  font-size:11.5px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--ink-3);
-  margin-top:14px;
-}
-.logline{
-  font-family:var(--display);
-  font-size:clamp(17px,3.2vw,21px);
-  line-height:1.65;
-  color:var(--ink);
-  margin:22px 0 0;
-  padding-left:18px;
-  border-left:2px solid var(--stamp);
-  max-width:62ch;
-}
-.specs{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
-  gap:0;
-  margin-top:34px;
-  border-top:1px solid var(--rule);
-  border-bottom:1px solid var(--rule);
-}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,8.5vw,64px);line-height:1.08;margin:26px 0 0;text-wrap:balance}
+.sub{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-3);margin-top:14px}
+.logline{font-family:var(--display);font-size:clamp(17px,3.2vw,21px);line-height:1.65;margin:22px 0 0;padding-left:18px;border-left:2px solid var(--stamp);max-width:62ch}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin:34px 0 0;border-block:1px solid var(--rule)}
 .spec{padding:14px 16px 14px 0}
-.spec dt{
-  font-family:var(--mono);
-  font-size:10.5px;
-  letter-spacing:.1em;
-  color:var(--ink-3);
-  text-transform:uppercase;
-}
-.spec dd{margin:5px 0 0;font-size:14px;font-weight:400;color:var(--ink)}
-
-/* ---- sections ---- */
+.spec dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-3)}
+.spec dd{margin:5px 0 0;font-size:14px;font-weight:400}
 section{padding-block:52px 0}
-.sec-head{display:flex;gap:14px;align-items:baseline;margin-bottom:4px}
-.sec-num{
-  font-family:var(--mono);
-  font-size:11px;
-  font-weight:500;
-  color:var(--ink-3);
-  letter-spacing:.05em;
-  flex:none;
-  padding-top:2px;
-}
-h2{
-  font-family:var(--display);
-  font-weight:400;
-  font-size:clamp(23px,4.4vw,30px);
-  line-height:1.3;
-  margin:0;
-  text-wrap:balance;
-}
+.sec-head{display:flex;gap:14px;align-items:baseline}
+.sec-num{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink-3);flex:none}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(23px,4.4vw,30px);line-height:1.3;margin:0;text-wrap:balance}
 .dek{color:var(--ink-2);max-width:64ch;margin:12px 0 0;font-size:14.5px}
 p{max-width:64ch;margin:14px 0 0}
-h3{
-  font-family:var(--body);
-  font-weight:600;
-  font-size:15px;
-  letter-spacing:-.005em;
-  margin:30px 0 0;
-}
-strong{font-weight:600}
+h3{font-weight:600;font-size:15px;margin:30px 0 0}
+strong,b{font-weight:600}
 em{font-style:normal;background:var(--stamp-wash);color:var(--stamp);padding:0 3px;font-weight:500}
-
-/* ---- rules (짖음) ---- */
 .rules{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
-.rule{background:var(--surface);padding:18px 20px}
+.rule{background:var(--surface);padding:18px 20px;min-width:0}
 .rule-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
-.rid{
-  font-family:var(--mono);font-size:11px;font-weight:500;
-  color:var(--surface);background:var(--ink);
-  padding:2px 7px;letter-spacing:.06em;flex:none;
-}
+.rid{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--on-ink);background:var(--ink);padding:2px 7px;flex:none}
+.rid.red{background:var(--stamp)}
 .rname{font-weight:600;font-size:14.5px}
-.rfunc{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-left:auto}
-.rule p{margin-top:8px;font-size:14px;max-width:60ch}
-
-/* ---- 회의록 데모 ---- */
-.minutes{
-  margin-top:26px;
-  background:var(--surface-2);
-  border:1px solid var(--rule-soft);
-  padding:20px;
-  font-family:var(--mono);
-  font-size:12.5px;
-  line-height:1.85;
-}
-.minutes .mhead{color:var(--ink-3);font-size:11px;letter-spacing:.04em;border-bottom:1px dashed var(--rule);padding-bottom:10px;margin-bottom:12px}
-.minutes .line{display:block;color:var(--ink-2);margin-top:4px}
-.minutes .line .who{color:var(--ink);font-weight:500}
-.minutes .slip{opacity:var(--ghost)}
-.minutes .restored{opacity:1;color:var(--ink);background:var(--stamp-wash);box-shadow:-8px 0 0 var(--stamp-wash),8px 0 0 var(--stamp-wash)}
-.minutes .restored .who{color:var(--stamp)}
-.note{
-  font-family:var(--mono);font-size:11px;color:var(--ink-3);
-  margin-top:12px;padding-top:10px;border-top:1px dashed var(--rule);line-height:1.6;
-}
-.note b{color:var(--stamp);font-weight:500}
-
-/* ---- chain ---- */
-.chain{display:flex;flex-direction:column;gap:0;margin-top:26px}
-.link{border-left:3px solid var(--tc);background:var(--tw);padding:16px 18px}
-.link .lk-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
-.lk-tier{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--tc);font-weight:500;text-transform:uppercase}
-.lk-name{font-weight:600;font-size:15px}
-.link p{margin-top:7px;font-size:14px;max-width:58ch}
-.drop{
-  font-family:var(--mono);font-size:11px;color:var(--ink-3);
-  padding:9px 0 9px 20px;letter-spacing:.02em;
-}
-.drop::before{content:"↓";margin-right:9px;color:var(--ink-3)}
-.link--close{border-left:3px solid var(--stamp);background:var(--stamp-wash)}
-.link--close .lk-tier{color:var(--stamp)}
-
-/* ---- table ---- */
+.rfunc{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-left:auto}
+.rule p{margin-top:8px;font-size:14px}
 .scroll{overflow-x:auto;margin-top:24px;-webkit-overflow-scrolling:touch}
-table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
 th,td{text-align:left;padding:11px 14px 11px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
-thead th{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule);padding-top:0;
-}
-tbody th{font-weight:600;font-size:13.5px;white-space:nowrap}
-td{color:var(--ink-2)}
-td b{color:var(--ink);font-weight:600}
-
-/* ---- arc ---- */
-.arc{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
-.arc-cell{background:var(--surface);padding:18px 18px 20px;border-top:3px solid var(--tc)}
-.arc-cell .ac-tier{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--tc);font-weight:500}
-.arc-cell .ac-line{font-family:var(--display);font-size:19px;line-height:1.45;margin-top:9px}
-.arc-cell .ac-sub{font-size:12.5px;color:var(--ink-3);margin-top:8px;line-height:1.6}
-
-/* ---- beats ---- */
-.part{margin-top:32px;border-top:2px solid var(--tc)}
-.part-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:12px 0 10px}
-.part-no{font-family:var(--display);font-size:24px;color:var(--tc);line-height:1}
-.part-name{font-weight:600;font-size:15px}
-.part-count{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:auto;letter-spacing:.04em}
-ol.beats{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule-soft);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
-ol.beats li{background:var(--surface);display:grid;grid-template-columns:34px 92px 1fr;gap:14px;padding:10px 0;align-items:baseline}
-ol.beats .n{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:right}
-ol.beats .t{font-family:var(--mono);font-size:11px;color:var(--tc);letter-spacing:.02em;padding-top:1px}
-ol.beats .d{font-size:13.5px;line-height:1.65;color:var(--ink-2)}
-ol.beats .d b{color:var(--ink);font-weight:600}
-ol.beats li.key{background:var(--tw)}
-@media (max-width:560px){
-  ol.beats li{grid-template-columns:28px 1fr;gap:6px 10px;padding:11px 0}
-  ol.beats .t{grid-column:2;font-size:10.5px}
-  ol.beats .d{grid-column:2}
-}
-
-/* ---- cast ---- */
+thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule)}
+tbody th{font-weight:600;white-space:nowrap}
+td{color:var(--ink-2)} td b{color:var(--ink)}
+tr.hl td,tr.hl th{background:var(--stamp-wash)}
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
+.lane{background:var(--surface);padding:18px;border-top:3px solid var(--tc);min-width:0}
+.lane .lt{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--tc);font-weight:500}
+.lane .ln{font-family:var(--display);font-size:19px;line-height:1.4;margin-top:8px}
+.lane .ls{font-size:12.5px;color:var(--ink-3);margin-top:8px;line-height:1.6}
+.converge{margin-top:1px;border:1px solid var(--stamp);background:var(--stamp-wash);padding:16px 18px}
+.converge .lt{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--stamp);font-weight:500}
+.converge p{margin-top:6px;font-size:14px}
 .cast{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:18px}
-.person{background:var(--surface);padding:14px 16px;display:grid;grid-template-columns:150px 1fr;gap:6px 18px;align-items:baseline}
+.person{background:var(--surface);padding:14px 16px;display:grid;grid-template-columns:160px 1fr;gap:6px 18px;align-items:baseline}
 .person .pn{font-weight:600;font-size:14px}
-.person .pr{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:block;margin-top:3px;letter-spacing:.03em}
-.person .pd{font-size:13.5px;color:var(--ink-2);line-height:1.65}
-.person .pd b{color:var(--ink);font-weight:600}
-.person.lead{background:var(--tw)}
+.person .pr{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);display:block;margin-top:3px}
+.person .pd{font-size:13.5px;color:var(--ink-2);line-height:1.65;min-width:0}
+.person .pd b{color:var(--ink)}
+.person.villain{background:var(--stamp-wash)}
+.person.villain .pn::before{content:attr(data-n);font-family:var(--mono);font-size:11px;color:var(--stamp);margin-right:8px}
 @media (max-width:560px){.person{grid-template-columns:1fr}}
-
-/* ---- killed / kept ---- */
-.ledger{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
-.ledger div{background:var(--surface);padding:16px 18px}
-.ledger h4{margin:0 0 10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--ink-3)}
-.ledger ul{margin:0;padding-left:16px;font-size:13px;line-height:1.8;color:var(--ink-2)}
-.ledger .cut h4{color:var(--stamp)}
-@media (max-width:560px){.ledger{grid-template-columns:1fr}}
-
-/* ---- callout ---- */
-.callout{
-  margin-top:26px;border:1px solid var(--ink);padding:20px;background:var(--surface);
-}
-.callout .co-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.callout .co-body{font-family:var(--display);font-size:clamp(16px,3vw,19px);line-height:1.65;margin-top:10px;max-width:56ch}
-
-/* ---- risks ---- */
-dl.risk{margin-top:20px;display:grid;gap:1px;background:var(--rule-soft);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
-dl.risk>div{background:var(--surface);padding:13px 0;display:grid;grid-template-columns:156px 1fr;gap:6px 18px}
-dl.risk dt{font-weight:600;font-size:13.5px}
-dl.risk dd{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.65}
-@media (max-width:560px){dl.risk>div{grid-template-columns:1fr}}
-
-/* ---- footer ---- */
-footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.8;letter-spacing:.03em}
+.ep{margin-top:22px;border-top:2px solid var(--ink)}
+.ep-head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;padding:12px 0 8px}
+.ep-no{font-family:var(--display);font-size:24px;line-height:1}
+.ep-name{font-weight:600;font-size:15.5px}
+.ep-hook{font-family:var(--mono);font-size:11px;color:var(--stamp);margin-left:auto}
+.ep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule-soft)}
+.ep-grid div{background:var(--surface);padding:10px 12px 12px;border-top:2px solid var(--tc);font-size:13px;color:var(--ink-2);line-height:1.6;min-width:0}
+.ep-grid div i{font-style:normal;display:block;font-family:var(--mono);font-size:10px;color:var(--tc);letter-spacing:.06em;margin-bottom:3px}
+.ep-grid div.none{color:var(--ink-3)}
+.ep-title{font-size:12.5px;color:var(--ink-2);padding:8px 0 0}
+.ep-title b{color:var(--stamp)}
+@media (max-width:620px){.ep-grid{grid-template-columns:1fr}}
+.callout{margin-top:26px;border:1px solid var(--ink);padding:20px}
+.co-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-3)}
+.co-body{font-family:var(--display);font-size:clamp(16px,3vw,19px);line-height:1.65;margin-top:10px;max-width:56ch}
+.quote{font-family:var(--display);font-size:clamp(20px,4vw,26px);line-height:1.5;color:var(--stamp);margin-top:6px}
+.note{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:14px;padding-top:10px;border-top:1px dashed var(--rule);line-height:1.7}
+.note b{color:var(--stamp);font-weight:500}
+.bars{margin-top:22px;display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:44px 1fr 56px;gap:10px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.bar .track{position:relative;height:12px;background:var(--surface-2);border:1px solid var(--rule-soft)}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--t1)}
+.bar .goal{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--stamp)}
+.bar .v{font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2)}
+ol.done{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule-soft)}
+ol.done li{background:var(--surface);display:grid;grid-template-columns:56px 1fr;gap:14px;padding:10px 0;font-size:13.5px;color:var(--ink-2)}
+ol.done li span{font-family:var(--mono);font-size:11px;color:var(--t1)}
+ol.done li.todo span{color:var(--stamp)}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:11px;color:var(--ink-3);line-height:1.8}
 footer b{color:var(--ink-2);font-weight:500}
-.stampmark{
-  display:inline-block;border:1.5px solid var(--stamp);color:var(--stamp);
-  font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:4px 9px;
-  margin-top:14px;transform:rotate(-1.5deg);
-}
-::selection{background:var(--stamp);color:var(--surface)}
-:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+.stampmark{display:inline-block;border:1.5px solid var(--stamp);color:var(--stamp);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:4px 9px;margin-top:14px;transform:rotate(-1.5deg)}
+
+/* ---- 한눈에 ---- */
+.glance{padding-block:44px 0}
+.g-title{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--ink-3);margin:30px 0 10px}
+.fall{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.fall .step{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:stretch}
+.fall .where{font-family:var(--mono);font-size:10.5px;color:var(--tc);letter-spacing:.05em;padding-top:14px;text-align:right;border-right:3px solid var(--tc);padding-right:14px}
+.fall .what{padding:12px 0 14px;min-width:0}
+.fall .what .big{font-family:var(--display);font-size:clamp(17px,3.2vw,21px);line-height:1.45}
+.fall .what .who{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.fall .what .who b{color:var(--stamp);font-weight:500}
+.fall .arrow{margin-left:134px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);padding:2px 0 4px;min-width:0}
+.fall .arrow::before{content:"↓ ";color:var(--stamp)}
+@media (max-width:520px){.fall .step{grid-template-columns:84px 1fr;gap:10px}.fall .where{font-size:9.5px;padding-right:8px}.fall .arrow{margin-left:94px}}
+.tl{position:relative;margin-top:6px;padding:10px 0 0}
+.tl-axis{position:relative;height:22px;border-bottom:1px solid var(--rule);margin-left:92px}
+.tl-axis span{position:absolute;bottom:4px;font-family:var(--mono);font-size:10px;color:var(--ink-3);transform:translateX(-2px)}
+.tl-row{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:center;margin-top:10px}
+.tl-row .lab{font-family:var(--mono);font-size:10.5px;color:var(--tc);text-align:right;line-height:1.3}
+.tl-row .lab small{display:block;color:var(--ink-3);font-size:9.5px}
+.tl-track{position:relative;height:26px;background:var(--surface-2)}
+.tl-bar{position:absolute;top:5px;height:16px;background:var(--tc);min-width:7px}
+.tl-mark{position:absolute;top:-6px;bottom:-6px;width:0;border-left:1.5px dashed var(--stamp)}
+.tl-mark i{position:absolute;top:-16px;left:4px;white-space:nowrap;font-style:normal;font-family:var(--mono);font-size:9.5px;color:var(--stamp)}
+.tl-foot{display:flex;flex-wrap:wrap;gap:6px 18px;margin:14px 0 0 92px;font-size:12px;color:var(--ink-2)}
+.tl-foot b{color:var(--stamp);font-weight:500}
+@media (max-width:520px){.tl-axis,.tl-foot{margin-left:72px}.tl-row{grid-template-columns:64px 1fr}}
+.strip{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:4px}
+.strip div{border:1px solid var(--rule-soft);background:var(--surface-2);min-height:64px;padding:6px 4px;font-family:var(--mono);font-size:10px;color:var(--ink-3);text-align:center;display:flex;flex-direction:column;gap:4px;min-width:0}
+.strip div.on{background:var(--stamp-wash);border-color:var(--stamp);color:var(--stamp)}
+.strip div.on.big{background:var(--stamp);color:var(--on-ink)}
+.strip div span{font-family:var(--body);font-size:10.5px;line-height:1.3;word-break:keep-all}
+@media (max-width:620px){.strip{grid-template-columns:repeat(6,1fr)}}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:4px}
+.three div{background:var(--surface);padding:14px;min-width:0}
+.three .k{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.08em}
+.three .v{font-family:var(--display);font-size:17px;line-height:1.45;margin-top:6px}
+.three .s{font-size:12px;color:var(--ink-2);margin-top:6px}
+@media (max-width:620px){.three{grid-template-columns:1fr}}
+::selection{background:var(--stamp);color:var(--on-ink)}
 </style>
 
 <div class="sheet">
-
 <header class="mast">
   <div class="doc-meta">
-    <span><b>문서번호</b> 기획-002 · v2.4</span>
-    <span><b>시행</b> 2026-09-13</span>
-    <span><b>상태</b> 탈고</span>
-    <span><b>대체</b> novel_handover_guide.md</span>
+    <span><b>문서번호</b> 기획-003 · v3.1</span>
+    <span><b>시행</b> 2026-10-03</span>
+    <span><b>상태</b> 초고 완료</span>
+    <span><b>대체</b> 기획-002 v2.4 (3부 32화판)</span>
   </div>
-
   <h1>어디서 개가<br>짖는구나</h1>
-  <div class="sub">3부 연작 장편 · 기획 전략</div>
-
-  <p class="logline">대기업 사무실에서 주말에 쓰인 기획서 한 줄이 협력사로, 다시 야간 창고로 떨어지는 동안, 아래에서 올라온 말은 전부 개 짖는 소리로 들린다.</p>
-
+  <div class="sub">12부 교차편집 장편 · 기획 전략</div>
+  <p class="logline">대기업 15층의 주말 62시간, 화성 협력사의 한 달, 야간 물류 라인의 7주. 세 시간선이 한 문장으로 이어지는 동안 아래에서 올라온 말은 전부 개 짖는 소리로 들린다. 그리고 그 말을 처음 한 사람은 자기 목소리마저 그렇게 듣게 된다.</p>
   <dl class="specs">
     <div class="spec"><dt>장르</dt><dd>오피스 블랙코미디 · 휴먼드라마</dd></div>
-    <div class="spec"><dt>분량</dt><dd>32화 · 106,829자</dd></div>
-    <div class="spec"><dt>판형</dt><dd>신국판 POD · 264면</dd></div>
-    <div class="spec"><dt>독자</dt><dd>25–45세 재직자</dd></div>
+    <div class="spec"><dt>분량</dt><dd>12부 · 본문 약 10만 2천 자</dd></div>
+    <div class="spec"><dt>판형</dt><dd>신국판 · 완성본 249면</dd></div>
+    <div class="spec"><dt>형식</dt><dd>3시간선 교차 · 드라마 12회 대응</dd></div>
   </dl>
 </header>
 
-<section>
-  <div class="sec-head"><span class="sec-num">1.</span><h2>제목이 곧 설계도다</h2></div>
-  <p class="dek">「어디서 개가 짖는구나」는 남의 항변을 소음으로 처리하는 말이다. 스트레스의 비유가 아니라 <strong>말이 도달하지 못하는 사태</strong>에 대한 말이다. 이 작품은 그 한 문장을 물리 법칙으로 구현하는 데 전부를 쓴다.</p>
+<section class="glance">
+  <div class="sec-head"><span class="sec-num">0.</span><h2>한눈에 보기</h2></div>
+  <p class="dek">한 문장이 네 층을 내려가는 동안, 세 사람이 서로를 모른 채 같은 반년을 지나간다.</p>
 
-  <div class="ledger">
-    <div>
-      <h4>계승</h4>
-      <ul>
-        <li>제목</li>
-        <li>금요일 17:40 도입부</li>
-        <li>5직급 군상</li>
-        <li>밀실 + 타임리미트</li>
-        <li>전반 블랙코미디 · 후반 휴먼드라마</li>
-      </ul>
+  <div class="g-title">한 문장이 떨어지는 길 — 7.6%가 손가락 두 개가 되기까지</div>
+  <div class="fall">
+    <div class="step" style="--tc:var(--stamp)"><div class="where">22층<br>2/26 임원간담회</div><div class="what"><div class="big">"7.6? 8로 해. 깔끔하게."</div><div class="who"><b>① 함도진</b> · 이의 없으면 전원 합의. 손 든 최정남에게 "어디서 개가 짖나"</div></div></div>
+    <div class="arrow">다음 날 17:42 "전면 수정 요망"</div>
+    <div class="step" style="--tc:var(--t1)"><div class="where">15층<br>2/27~3/2 · A</div><div class="what"><div class="big">기획서 3장 2절 — 단가 8% · 납기 5일 단축</div><div class="who">김민지가 다듬은 한 줄. 리스크란 "해당 없음". 고발글 소동은 <b>③ 탁용민</b>이 파견직 정수경으로 닫는다</div></div></div>
+    <div class="arrow">3주 뒤 A4 한 장 팩스</div>
+    <div class="step" style="--tc:var(--t2)"><div class="where">화성 율목정밀<br>3/23~4/22 · B</div><div class="what"><div class="big">8% → 정확한 원가내역서 → 9%</div><div class="who"><b>④ 나성필</b>의 공문. 야간 주 5회, 응우옌의 손가락 두 개, 경위서 "인적 피해 없음", 그리고 감사패</div></div></div>
+    <div class="arrow">윤소라가 계약한 최저가 외주 · 온빛로지스</div>
+    <div class="step" style="--tc:var(--t3)"><div class="where">경기 남부 창고<br>6/22~8/10 · C</div><div class="what"><div class="big">조끼 14번, 이름 외우지 마세요</div><div class="who"><b>⑤ 오세웅</b>의 라인. 06번이 쓰러져도 "개인 사유 조퇴". 낮에는 <b>② 선우담</b>의 「상생」 면접</div></div></div>
+  </div>
+
+  <div class="g-title">세 시간선 — 2026년 2월~8월</div>
+  <div class="tl" role="img" aria-label="2월부터 8월까지 세 시간선이 놓인 기간">
+    <div class="tl-axis">
+      <span style="left:0">2월</span><span style="left:13.21%">3월</span><span style="left:27.83%">4월</span><span style="left:41.98%">5월</span><span style="left:56.60%">6월</span><span style="left:70.75%">7월</span><span style="left:85.38%">8월</span>
     </div>
-    <div class="cut">
-      <h4>폐기</h4>
-      <ul>
-        <li>직급↔견종 1:1 대응표</li>
-        <li>청소노동자 반전</li>
-        <li>상무 자작극 반전</li>
-        <li>트로이 목마 보고서 결말</li>
-        <li>5인 공동주인공 · 새소리 엔딩</li>
-      </ul>
-    </div>
+    <div class="tl-row" style="--tc:var(--t1)"><div class="lab">A 김민지<small>62시간</small></div><div class="tl-track"><div class="tl-bar" style="left:12.26%;width:1.89%"></div><div class="tl-mark" style="left:89.62%"><i>8/10 수렴</i></div></div></div>
+    <div class="tl-row" style="--tc:var(--t2)"><div class="lab">B 윤소라<small>한 달</small></div><div class="tl-track"><div class="tl-bar" style="left:23.58%;width:14.15%"></div><div class="tl-mark" style="left:37.74%"><i>4/22 카페 묵</i></div><div class="tl-mark" style="left:89.62%"></div></div></div>
+    <div class="tl-row" style="--tc:var(--t3)"><div class="lab">C 남해인<small>7주</small></div><div class="tl-track"><div class="tl-bar" style="left:66.51%;width:23.11%"></div><div class="tl-mark" style="left:89.62%"></div></div></div>
+    <div class="tl-foot"><span><b>4/22 오전 11:04</b> 카페 묵 — 세 사람이 한 공간에 있었다</span><span><b>8/10</b> 녹취 · 영전 · 수신자</span></div>
+  </div>
+
+  <div class="g-title">제목 문장이 나오는 자리 — 12부 중 여섯</div>
+  <div class="strip">
+    <div class="on">1<span>최정남<br>농담</span></div><div>2</div><div>3</div>
+    <div class="on">4<span>구본철<br>전염</span></div><div>5</div>
+    <div class="on">6<span>오세웅<br>전염</span></div><div>7</div>
+    <div class="on big">8<span>함도진<br>기원</span></div><div>9</div><div>10</div>
+    <div class="on">11<span>탁용민<br>무기</span></div>
+    <div class="on big">12<span>짖는구나<br>깨달음</span></div>
+  </div>
+
+  <div class="g-title">같은 밤, 세 자리</div>
+  <div class="three">
+    <div><div class="k">끝까지 그 말을 하는 사람</div><div class="v">함도진</div><div class="s">자기 녹취를 듣고 "어디서 개가 짖는구나"</div></div>
+    <div><div class="k">하려다 멈추는 사람</div><div class="v">김민지</div><div class="s">"어—" 대신 "이름이 뭐예요?"</div></div>
+    <div><div class="k">먼저 이름을 부른 사람</div><div class="v">남해인</div><div class="s">"민석 씨." 가장 낮은 자리에서 먼저</div></div>
   </div>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">2.</span><h2>핵심 장치 — '짖음' 현상</h2></div>
-  <p class="dek">권력 아래에 있는 사람이 시스템에 불편한 진실을 말하면, <strong>듣는 쪽 귀에만</strong> 개 짖는 소리로 들린다. 규칙은 네 개뿐이고, 네 개 전부가 각기 다른 일을 한다. 현상의 원인은 끝까지 설명하지 않는다.</p>
+  <div class="sec-head"><span class="sec-num">1.</span><h2>제목은 다섯 번 바뀐다</h2></div>
+  <p class="dek">같은 문장이 다섯 번 나오고, 나올 때마다 뜻이 바뀐다. 1부에서 웃은 독자는 8부에서 웃지 못하고, 12부에서는 「짖나」와 「짖는구나」의 차이를 알게 된다. <strong>「-구나」는 모르던 것을 지금 막 알게 됐을 때 쓰는 말이다.</strong></p>
+  <div class="scroll"><table>
+    <thead><tr><th>부</th><th>누가 → 누구에게</th><th>겹</th><th>반응</th></tr></thead>
+    <tbody>
+      <tr><th>1</th><td>최정남 → 짜장면 자리의 부하들</td><td>말버릇</td><td>다 같이 웃는다</td></tr>
+      <tr><th>4</th><td>구본철 → 조태산 <span style="color:var(--ink-3)">(사흘 전 나성필에게 들은 말)</span></td><td>전염</td><td>아무도 웃지 않는다</td></tr>
+      <tr><th>6</th><td>오세웅 → "물 좀 주세요" 한 야간 라인</td><td>전염</td><td>남해인이 넉 달 전 편의점에서 들은 말이라는 걸 떠올린다</td></tr>
+      <tr class="hl"><th>8</th><td><b>함도진 → 최정남</b> · 2월 26일 임원간담회</td><td>기원</td><td>1부의 웃음이 뒤집힌다. 최정남이 하루 전에 들은 말이었다</td></tr>
+      <tr><th>11</th><td>탁용민 → 김민지</td><td>무기</td><td>"누가 짖었는지는 중요하지 않아요. 짖은 개를 치우는 게 중요하지."</td></tr>
+      <tr class="hl"><th>12</th><td><b>함도진 → 자기 목소리</b> · 영전 축하연</td><td>깨달음</td><td>스피커 속 자기 녹취를 듣고 "어디서 개가 짖는구나." 그는 끝까지 모른다</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">
+    <div class="co-label">12부 · 같은 밤, 한 문장이 세 자리를 가른다</div>
+    <div class="co-body">끝까지 그 말을 하는 사람(함도진), 그 말을 하려다 멈추고 이름을 묻는 사람(김민지), 그 말을 듣다가 먼저 이름을 부른 사람(남해인).</div>
+  </div>
+</section>
 
+<section>
+  <div class="sec-head"><span class="sec-num">2.</span><h2>짖음 규칙 — 넷과 하나</h2></div>
+  <p class="dek">아래 사람이 불편한 진실을 말하면 듣는 쪽 귀에만 개 짖는 소리가 들린다. 현상의 원인은 끝까지 설명하지 않는다.</p>
   <div class="rules">
-    <div class="rule">
-      <div class="rule-top"><span class="rid">R1</span><span class="rname">도달 실패</span><span class="rfunc">미스터리</span></div>
-      <p>말한 사람은 자기 말이 전달됐다고 믿는다. 짖음은 듣는 쪽에서만 발생한다. → 같은 대화를 두 사람이 정반대로 기억하는 장면이 계속 만들어진다.</p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">R2</span><span class="rname">기록 소실</span><span class="rfunc">플롯 엔진</span></div>
-      <p>짖음으로 들린 말은 회의록·메신저·보고서에서 미끄러진다. 물리적 삭제가 아니다. <strong>글자는 거기 있고, 읽는 사람의 눈이 그 줄을 지나친다.</strong> 1부 반전의 원인이자 내용.</p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">R3</span><span class="rname">전염과 상승</span><span class="rfunc">블랙코미디</span></div>
-      <p>아랫사람의 말을 오래 짖음으로 처리한 사람은, 어느 시점부터 자기 말도 윗선에게 짖음으로 들린다. 위로 갈수록 심하다. 장독고 상무는 오너 앞에서 이미 완전히 개다.</p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">R4</span><span class="rname">해제 조건</span><span class="rfunc">휴먼드라마</span></div>
-      <p>듣는 쪽이 말하는 쪽의 <strong>이름을 부르고</strong> 그 처지를 자기 처지로 상상하는 순간에만 풀린다. 지속되지 않는다. 매번 다시 해야 한다. → 값싼 화해를 원천 차단한다.</p>
-    </div>
-  </div>
-
-  <h3>R2는 이렇게 보인다</h3>
-  <div class="minutes">
-    <div class="mhead">전략기획본부 주간회의 회의록 [발췌] · 2월 14일 14:00 · 15층 중회의실</div>
-    <span class="line"><span class="who">최정남 부장</span> — 원가 절감 목표는 본부 차원에서 이미 확정된 사안입니다.</span>
-    <span class="line slip"><span class="who">이강토 사원</span> — 2차 협력사는 지금 단가로도 야간 특근으로 버티고 있습니다. 8% 더 내리면 사람이 다칩니다.</span>
-    <span class="line"><span class="who">장독고 상무</span> — 다음 안건 갑시다.</span>
-    <div class="note">위 두 번째 줄은 회의록 파일에 <b>실제로 존재한다.</b> 결재 라인의 누구도 그 줄을 읽지 못한다. 이강토는 같은 말을 서로 다른 회차에 세 번 했고, 세 번 다 동일하게 누락되었다.</div>
-  </div>
-
-  <p>환영(시각)은 전 작품에서 다섯에서 여섯 번만 쓴다. 직급별 견종 고정 대응은 폐기했다 — 독자가 대응표를 외우는 순간 장치가 장식이 된다. 형상은 그 인물이 자기를 어떻게 보는지에 따라 매번 달라지고, 서술은 견종을 해설하지 않는다.</p>
-</section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">3.</span><h2>먹이사슬 릴레이</h2></div>
-  <p class="dek">세 부를 하나의 작품으로 묶는 것은 인물이 아니라 <strong>한 문장</strong>이다. 기획서의 한 줄이 아래로 떨어지면서 계급 구조가 스스로 증명된다. 작가는 그것에 대해 한 줄도 설명하지 않는다.</p>
-
-  <div class="chain">
-    <div class="link" style="--tc:var(--t1);--tw:var(--t1-wash)">
-      <div class="lk-top"><span class="lk-tier">1부 · 대기업</span><span class="lk-name">묵산그룹 전략기획본부 15층</span></div>
-      <p>다섯 명이 주말 내내 살아남기 위해 써낸 「원가구조 혁신 기획서」. 3장 2절 — <em>2차 협력사 단가 8% 재협상 · 납기 5일 단축</em></p>
-    </div>
-    <div class="drop">3주 후 · A4 한 장 공문으로</div>
-    <div class="link" style="--tc:var(--t2);--tw:var(--t2-wash)">
-      <div class="lk-top"><span class="lk-tier">2부 · 중소기업</span><span class="lk-name">(주)율목정밀 · 경기 화성 · 직원 9명</span></div>
-      <p>거부할 수 없다. 납기를 맞추려 야간 단기인력을 대량 투입하기로 결정한다.</p>
-    </div>
-    <div class="drop">2개월 후 · 구인 앱 공고로</div>
-    <div class="link" style="--tc:var(--t3);--tw:var(--t3-wash)">
-      <div class="lk-top"><span class="lk-tier">3부 · 알바·취준</span><span class="lk-name">야간 라인 12시간 교대 · 낮에는 취업준비</span></div>
-      <p>남해인은 낮에 자소서를 쓰고 밤에 이 라인에 선다. 뒤에 묵산그룹 최종면접에서 탈락한다. 자기가 선 자리가 그 기획서가 만든 자리라는 것을 끝까지 모른다.</p>
-    </div>
-    <div class="drop">복원된 회의록이 되돌아온다</div>
-    <div class="link link--close">
-      <div class="lk-top"><span class="lk-tier">회수</span><span class="lk-name">다시 1부 사무실 · 15층</span></div>
-      <p>이번엔 짖음으로 변하지 않는다.</p>
-    </div>
+    <div class="rule"><div class="rule-top"><span class="rid">R1</span><span class="rname">도달 실패</span><span class="rfunc">미스터리</span></div><p>말한 사람은 전달됐다고 믿는다. 같은 회의를 두 사람이 정반대로 기억한다. 3부의 3장 다툼, 4부의 "어디서 개가 짖어".</p></div>
+    <div class="rule"><div class="rule-top"><span class="rid">R2</span><span class="rname">기록 소실</span><span class="rfunc">플롯 엔진</span></div><p>짖음으로 들린 말은 회의록에서 미끄러진다. 글자는 거기 있고 눈이 지나칠 뿐이다. 김민지의 매크로 <b>정음</b>을 거치면 읽힌다.</p></div>
+    <div class="rule"><div class="rule-top"><span class="rid">R3</span><span class="rname">전염과 상승</span><span class="rfunc">블랙코미디</span></div><p>아래 말을 오래 짖음으로 처리한 사람은 위에서 자기 말도 짖음으로 들린다. 구본철은 나성필 앞에서, 장독고는 선우담 앞에서 개가 된다. <b>빌런도 짖는다.</b></p></div>
+    <div class="rule"><div class="rule-top"><span class="rid red">R3+</span><span class="rname">끝</span><span class="rfunc">제목 장면</span></div><p>사다리를 끝까지 올라간 사람에게는 자기 목소리도 짖음으로 들린다. 12부의 함도진.</p></div>
+    <div class="rule"><div class="rule-top"><span class="rid">R4</span><span class="rname">해제</span><span class="rfunc">휴먼드라마</span></div><p>듣는 쪽이 말하는 쪽의 이름을 부르고 그 자리에 잠깐 자기를 놓아 볼 때만 풀린다. 지속되지 않는다. <b>가장 낮은 자리에서 먼저 풀린다</b> — 10부 남해인 "민석 씨", 그다음 박종두 "강토야", 12부 김민지 "소영 씨".</p></div>
   </div>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">4.</span><h2>부마다 지옥의 종류가 다르다</h2></div>
-  <p class="dek">같은 고통을 세 번 반복하면 독자가 지친다. 계급이 내려갈수록 고통의 양이 아니라 <strong>종류</strong>가 바뀌어야 한다. 2부가 1부보다 더 숨 막히고, 3부는 분노할 대상조차 없다.</p>
-
-  <div class="scroll">
-    <table>
-      <thead><tr><th></th><th>가해자</th><th>숨을 곳</th><th>핵심 공포</th></tr></thead>
-      <tbody>
-        <tr><th>1부 대기업</th><td><b>시스템</b> — 얼굴이 없다</td><td>익명 앱, HR, 절차</td><td>절차가 다 지켜졌는데 아무도 책임지지 않는다</td></tr>
-        <tr><th>2부 중소기업</th><td><b>사람</b> — 사장 얼굴이 보인다</td><td>없음. 직원 9명이라 익명이 불가능하다</td><td>쓰는 순간 누군지 특정된다</td></tr>
-        <tr><th>3부 알바·취준</th><td><b>없음</b> — 관계 자체가 없다</td><td>해당 없음</td><td>말을 들어줄 상대가 애초에 존재하지 않는다</td></tr>
-      </tbody>
-    </table>
+  <div class="sec-head"><span class="sec-num">3.</span><h2>세 시간선, 한 문장</h2></div>
+  <p class="dek">한 부 안에서 A·B·C가 교차한다. 기획서 3장 2절의 한 줄 — <em>2차 협력사 단가 8% · 납기 5일 단축</em> — 이 위에서 아래로 떨어지는 동안 세 사람은 서로를 모른다. 만난 적도 없는데 같은 박스, 같은 카페, 같은 문장을 지나간다.</p>
+  <div class="lanes">
+    <div class="lane" style="--tc:var(--t1)"><div class="lt">A · 묵산타워 15층 · 김민지</div><div class="ln">2/27 금 17:40 → 3/2 월 08:00</div><div class="ls">62시간. 누가 고발글을 썼나, 그리고 누가 치워지나.</div></div>
+    <div class="lane" style="--tc:var(--t2)"><div class="lt">B · (주)율목정밀 · 윤소라</div><div class="ln">3/23 → 4/22</div><div class="ls">한 달. 공문 한 장이 손가락 두 개와 감사패가 되기까지.</div></div>
+    <div class="lane" style="--tc:var(--t3)"><div class="lt">C · 야간 물류 라인 · 남해인</div><div class="ln">6/22 → 8/10</div><div class="ls">7주. 이름 없는 사람이 쓰러지고 나서야 이름을 묻는다.</div></div>
   </div>
-
-  <h3>감정 곡선은 반대로 올라간다</h3>
-  <p>1→2→3부는 계급 하강이다. 그대로 쓰면 끝이 가장 암울해 독자가 무너진다. 계급 대신 <strong>말의 운명</strong>으로 곡선을 뒤집는다.</p>
-
-  <div class="arc">
-    <div class="arc-cell" style="--tc:var(--t1)">
-      <div class="ac-tier">1부</div>
-      <div class="ac-line">말했는데<br>안 들린다</div>
-      <div class="ac-sub">전부 말했고, 전부 지워졌다</div>
-    </div>
-    <div class="arc-cell" style="--tc:var(--t2)">
-      <div class="ac-tier">2부</div>
-      <div class="ac-line">말할 상대가<br>없다</div>
-      <div class="ac-sub">아홉 명 중 누구에게도</div>
-    </div>
-    <div class="arc-cell" style="--tc:var(--stamp)">
-      <div class="ac-tier">3부</div>
-      <div class="ac-line">처음으로<br>한 사람이 듣는다</div>
-      <div class="ac-sub">회사는 바뀌지 않는다. 그래도 오늘은 읽었다</div>
-    </div>
-  </div>
+  <div class="converge"><div class="lt">수렴 · 8월 10일 월요일</div><p>선우담이 녹취를 터뜨린다. 함도진은 영전하고, 탁용민은 꼬리로 잘린다. 김민지는 정수경의 주소를 수신자 칸에 치고, 남해인의 메일은 수신자를 찾지 못한 채 돌아온다. 그날 밤에도 그는 셔틀을 탄다.</p></div>
+  <p>세 시간선이 닿는 자리는 모두 물건이다. 4/22 카페 묵(세 사람이 같은 공간에 있던 오전 11시 4분), 율목정밀 스티커가 붙은 박스, 윤소라가 도장을 찍은 성적서, 윤소라가 계약한 외주 업체 온빛로지스.</p>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">5.</span><h2>1부 반전 — 복원된 회의록</h2></div>
-  <p class="dek">누구도 계획하지 않은 반전이다. 버그라고 생각한 사람 하나, 술 취해 붙여넣은 사람 하나. 둘 다 평범하다. 그런데 결과가 가장 무섭다.</p>
-
-  <div class="chain">
-    <div class="link" style="--tc:var(--t3);--tw:var(--t3-wash)">
-      <div class="lk-top"><span class="lk-tier">몇 주 전</span></div>
-      <p>김민지가 정음을 돌리다 회의록에서 사라진 문장들이 복원되는 것을 본다. 프로그램 버그라고 생각한다. 이강토에게 보낸다 — "이거 좀 봐, 회의록 이상해."</p>
-    </div>
-    <div class="drop"></div>
-    <div class="link" style="--tc:var(--t3);--tw:var(--t3-wash)">
-      <div class="lk-top"><span class="lk-tier">그 새벽 03:40</span></div>
-      <p>이강토가 그 파일을 읽는다. 자기가 했던 말이 전부 지워져 있다. 술. 전문을 익명 앱에 그대로 붙인다. 기억에 거의 남지 않는다.</p>
-    </div>
-    <div class="drop"></div>
-    <div class="link link--close">
-      <div class="lk-top"><span class="lk-tier">그래서</span></div>
-      <p>고발글은 창작물이 아니다. <strong>회의록이다.</strong> 회사가 지운 회사 자신의 기록이다.</p>
-    </div>
+  <div class="sec-head"><span class="sec-num">4.</span><h2>빌런 다섯, 회색 넷</h2></div>
+  <p class="dek">빌런은 있다. 의도와 선택이 있다. 그래도 그들 역시 위를 향해 짖고, 사다리 꼭대기에 선 빌런은 없다. 회색 인물은 남긴다. 빌런이 그들 위에 서 있어서 그들의 비굴함에 이유가 생긴다.</p>
+  <div class="cast">
+    <div class="person villain"><div><span class="pn" data-n="①">함도진</span><span class="pr">58 · 경영지원부사장</span></div><div class="pd">7.6을 8로 올린 사람. "깔끔하게." 이의가 없으면 <b>전원 합의</b>로 적게 한다. 편의점에서 뒤집힌 사원증을 단 채 동전을 던진다. 마지막 결재는 박종두의 창고 발령.</div></div>
+    <div class="person villain"><div><span class="pn" data-n="②">선우담</span><span class="pr">41 · 전략기획본부장 · 오너 3세</span></div><div class="pd">로비 전광판의 「상생 경영 원년」. 고발글은 지우지 말라고 하고, 녹취는 사장단 인사 하루 전에 푼다. 남해인의 최종면접관이자 「현실감 부족」의 주인.</div></div>
+    <div class="person villain"><div><span class="pn" data-n="③">탁용민</span><span class="pr">47 · 인사보안팀장</span></div><div class="pd">문체 분석으로 김민지를 알아내고도 "기록이 없는 사람"인 정수경으로 사건을 닫는다. 다섯 달 뒤 같은 절차로 자기가 치워진다.</div></div>
+    <div class="person villain"><div><span class="pn" data-n="④">나성필</span><span class="pr">44 · 구매본부 협력구매팀장</span></div><div class="pd">공문에는 전화번호가 없다. 정확한 원가내역서로 9%를 만든다. "신고하시면 우수 협력사 평가 끝나요." 감사패는 그의 실적 보고서 첫 장.</div></div>
+    <div class="person villain"><div><span class="pn" data-n="⑤">오세웅</span><span class="pr">39 · ㈜이룸에이치알 현장 실장</span></div><div class="pd">"이름 외우지 마세요." 쓰러진 사람을 「B조 야간 인원 1명 결원 (개인 사유 조퇴)」로 적는다.</div></div>
+    <div class="person"><div><span class="pn">장독고</span><span class="pr">53 · 상무</span></div><div class="pd">주말 내내 선우담의 전화를 기다린다. 복도 30초, "네, 본부장님."</div></div>
+    <div class="person"><div><span class="pn">최정남</span><span class="pr">48 · 부장</span></div><div class="pd">딱 한 번 손을 들었다가 개 짖는 소리를 들었다. 다음 날부터 그 말을 농담으로 쓴다. "농담이야. 알지?"</div></div>
+    <div class="person"><div><span class="pn">박종두</span><span class="pr">41 · 과장</span></div><div class="pd">회의에서 열한 번 반대했고 열한 번 지워졌다. 육아휴직 석 달 → 진급 2년 누락 → 경력 개발 면담 → 창고.</div></div>
+    <div class="person"><div><span class="pn">구본철</span><span class="pr">59 · 율목정밀 사장</span></div><div class="pd">직원에게는 "어디서 개가 짖어", 원청 앞에서는 "네, 그렇습니다". "신고하면 비자 끝나."</div></div>
   </div>
+  <p style="font-size:13.5px;color:var(--ink-2)">시점 인물: <b>김민지</b>(33, 대리, 정음을 만든 사람) · <b>윤소라</b>(28, 사무직, 겸이 다섯 개) · <b>남해인</b>(25, 취준 3년 차, 조끼 번호 14). 조연: 정수경(파견 서무, 메신저 없음, 디카페인) · 이강토(사원, 수첩) · 조태산(반장, "적어 놔요") · 김단(신입, "왜요") · 응우옌 반 남 · 하민우 · 지현(카페 묵 알바) · 민석(09번).</p>
+</section>
 
-  <div class="minutes">
-    <div class="mhead">정음 v0.4 — 복원 로그 · 원문 대조 출력</div>
-    <span class="line"><span class="who">최정남 부장</span> — 원가 절감 목표는 본부 차원에서 이미 확정된 사안입니다.</span>
-    <span class="line restored"><span class="who">이강토 사원</span> — 2차 협력사는 지금 단가로도 야간 특근으로 버티고 있습니다. 8% 더 내리면 사람이 다칩니다.</span>
-    <span class="line"><span class="who">장독고 상무</span> — 다음 안건 갑시다.</span>
-    <div class="note"><b>복원 완료.</b> 이건 기밀 누설이 아니다. 원래 사내에 존재했어야 하는 문서다. 회사가 진짜로 두려워한 것은 외부 폭로가 아니라 — 자기가 지운 것이 복원될 수 있다는 사실이다.</div>
-  </div>
+<section>
+  <div class="sec-head"><span class="sec-num">5.</span><h2>12부 배치</h2></div>
+  <p class="dek">각 부는 A·B·C를 교차한다. 기획에 따라 8부는 C가, 10부는 B가 비어 있다. 빨간 글씨는 그 부의 엔딩 훅이다. 부 제목은 그 부에서 가장 아픈 한마디로 지었다 — 8부 「어디서 개가 짖나」와 12부 「어디서 개가 짖는구나」가 차례에서 짝을 이룬다.</p>
 
-  <h3>보조 겹 — 무죄인 사람은 없다</h3>
-  <p>복원 로그는 이강토의 회의 발언에서 끝나지 않는다. 정음은 사내망을 거친 텍스트를 전부 훑었고, 그 안에는 <strong>사다리의 다른 칸에서 나온 조각들</strong>도 섞여 있다. 범인은 특정되지만, 결백한 사람은 한 명도 없다.</p>
+  <div class="ep"><div class="ep-head"><span class="ep-no">1</span><span class="ep-name">랜선 뽑아</span><span class="ep-hook">22:00 PC가 꺼진다. 십오 층만 켜져 있다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 2/27 17:40</i>콜드오픈 4/22 카페 묵 → 메신저 폭탄, 잔류 5인, 짜장면, "랜선 뽑아"</div><div class="none" style="--tc:var(--t2)"><i>B</i>—</div><div class="none" style="--tc:var(--t3)"><i>C</i>—</div></div>
+  <div class="ep-title">제목 1겹 · <b>최정남, 농담</b></div></div>
 
-  <div class="minutes">
-    <div class="mhead">정음 v0.4 — 복원 로그 [계속] · 출처 불명 단편 3건</div>
-    <span class="line restored"><span class="who">단편 #2</span> — 작성 추정 최정남. 익명 앱 댓글 초안, 전송되지 않음. "위에서는 숫자만 던지고 책임은 전부 아래로 내린다."</span>
-    <span class="line restored"><span class="who">단편 #3</span> — 작성 추정 장독고. 사외 커뮤니티 임시저장 글. "20년을 바쳤는데 회장 아들 앞에서는 아직도 서서 보고한다."</span>
-    <span class="line restored"><span class="who">단편 #4</span> — 작성 추정 박종두. 메모장 파일. 문장이 아니라 숫자만. 대출 잔액과 남은 개월 수.</span>
-    <div class="note"><b>같은 비명이 모든 칸에서 나왔다.</b> 최정남도 썼고 장독고도 썼다. 다만 그들의 것은 전송 버튼을 누르지 않았을 뿐이다. 이강토는 취해서 눌렀다. 그 차이 하나로 한 명만 범인이 된다.</div>
-  </div>
+  <div class="ep"><div class="ep-head"><span class="ep-no">2</span><span class="ep-name">이거 전에도 봤는데</span><span class="ep-hook">이 하이픈, 전에도 봤다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 금 23:40</i>2월 4일 회의록의 하이픈</div><div style="--tc:var(--t2)"><i>B · 3/23</i>공문(④ 나성필), 연차 3년째 0일</div><div style="--tc:var(--t3)"><i>C · 6/22</i>첫 셔틀, 회사 이름이 셋</div></div></div>
 
-  <p>이 겹이 하는 일은 분명하다. 이강토는 쓴 사람, 김민지는 출처, 박종두와 최정남은 그 말들을 지운 사람, 장독고는 지우게 만든 사람이다. <em>다섯 모두가 피해자이자 가해자다.</em> 그래서 12화에서 다섯이 함께 협력사 단가를 깎는 기획서를 제출하는 장면이 자연스럽게 성립한다 — 그들은 방금 자기가 겪은 일을 아래층에 그대로 내려보낸다.</p>
+  <div class="ep"><div class="ep-head"><span class="ep-no">3</span><span class="ep-name">상무님 지금 회의 중이십니다</span><span class="ep-hook">십오 층이었다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 토 09:00</i>R1, 사모님 전화, 축가, 토퍼</div><div style="--tc:var(--t2)"><i>B · 3/23</i>"이기면, 그다음 발주는 누가 주는데"</div><div style="--tc:var(--t3)"><i>C · 6/25</i>근로계약서가 없다</div></div></div>
 
-  <h3>상무의 무력함 — 복도에서 30초</h3>
-  <p>장독고의 밑바닥은 반전이 아니라 <strong>스치는 목격</strong>으로 처리한다. 길게 설명하면 연민이 되고, 연민이 되면 그가 12화에서 저지르는 일의 무게가 풀린다.</p>
+  <div class="ep"><div class="ep-head"><span class="ep-no">4</span><span class="ep-name">월요일 여덟 시까지 범인</span><span class="ep-hook">월요일 여덟 시까지 범인</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 토 14:00</i>고발글(03:41), ① 범인 지시</div><div style="--tc:var(--t2)"><i>B · 3/26</i>"사람이 다칩니다" → "어디서 개가 짖어"</div><div style="--tc:var(--t3)"><i>C · 6/29</i>합격 4분 만에 취소, 이름 외우지 마세요</div></div>
+  <div class="ep-title">제목 2겹 · <b>구본철 → 조태산, 아무도 웃지 않는다</b></div></div>
 
+  <div class="ep"><div class="ep-head"><span class="ep-no">5</span><span class="ep-name">직원 9명, 급여대장 10명</span><span class="ep-hook">IT실 얘기는 블러핑이 아니었다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 토 17:00</i>③ 탁용민, 쉼표</div><div style="--tc:var(--t2)"><i>B · 3/27</i>사모님 '이사', 원가내역서</div><div style="--tc:var(--t3)"><i>C · 7/2</i>배달 위탁, 계약 A·B 각 14.5시간</div></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">6</span><span class="ep-name">물 좀 주세요</span><span class="ep-hook">쉼표가 내 것이다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 토 22:00</i>편의점 동전, 22층</div><div style="--tc:var(--t2)"><i>B · 3/30</i>하민우와 아홉 명</div><div style="--tc:var(--t3)"><i>C · 7/8</i>서류 합격, "물 좀 주세요"</div></div>
+  <div class="ep-title">제목 3겹 · <b>오세웅 → 야간 라인</b></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">7</span><span class="ep-name">정확해서 1% 더 깎였다</span><span class="ep-hook">지워진 문장들이 돌아온다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 일 02:00</i>복원 47 → 388</div><div style="--tc:var(--t2)"><i>B · 4/1</i>정확해서 9%, 구본철이 개가 된다</div><div style="--tc:var(--t3)"><i>C · 7/15</i>② 선우담 병풍 면접</div></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">8</span><span class="ep-name">어디서 개가 짖나</span><span class="ep-hook">1부의 웃음이 뒤집힌다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 일 11:00</i>임원간담회 원본, 가짜 합의</div><div style="--tc:var(--t2)"><i>B · 4/6</i>확인자 윤소라, 김단의 첫 짖음</div><div class="none" style="--tc:var(--t3)"><i>C</i>—</div></div>
+  <div class="ep-title">제목 4겹 · <b>기원, 함도진 → 최정남</b></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">9</span><span class="ep-name">현실감 부족</span><span class="ep-hook">라인에 사람이 누워 있다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 일 19:00</i>03:41은 랜선을 뽑은 구멍</div><div style="--tc:var(--t2)"><i>B · 4/7</i>의견서, "나가면 손해배상"</div><div style="--tc:var(--t3)"><i>C · 7/21</i>현실감 부족, 06번이 쓰러진다</div></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">10</span><span class="ep-name">이름 외우지 마세요</span><span class="ep-hook">남해인이 먼저, 그다음 복도</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t3)"><i>C · 7/22 → 7/27</i>정동수, 「개인 사유 조퇴」, "민석 씨"</div><div class="none" style="--tc:var(--t2)"><i>B</i>—</div><div style="--tc:var(--t1)"><i>A · 일 23:00</i>복도 30초, "네, 본부장님"</div></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">11</span><span class="ep-name">짖은 개를 치우는 게 중요하지</span><span class="ep-hook">다섯 잔이 네 잔이 된 이유</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 월 02:00</i>수첩의 열한 번, 정수경으로 닫는다</div><div style="--tc:var(--t2)"><i>B · 4/16 → 4/22</i>응우옌의 손, 감사패, 카페 묵 회수</div><div class="none" style="--tc:var(--t3)"><i>C</i>—</div></div>
+  <div class="ep-title">제목 5번째 쓰임 · <b>탁용민, 짖은 개를 치운다</b></div></div>
+
+  <div class="ep"><div class="ep-head"><span class="ep-no">12</span><span class="ep-name">어디서 개가 짖는구나</span><span class="ep-hook">그 말을 하려다 멈추고 이름을 묻는다</span></div>
+  <div class="ep-grid"><div style="--tc:var(--t1)"><i>A · 3/2 → 8/10</i>교체 요청, 녹취, 영전 축하연</div><div style="--tc:var(--t2)"><i>B · 8/10</i>3분기 공문, 감사패의 먼지</div><div style="--tc:var(--t3)"><i>C · 8/10</i>수신자를 찾을 수 없습니다</div></div>
+  <div class="ep-title">제목 5겹 · <b>함도진 → 자기 목소리, 「짖는구나」</b></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">6.</span><h2>고발글은 누가 썼나</h2></div>
+  <p class="dek">아무도 계획하지 않았다. 그래서 가장 무섭다. 문체도 출처도 김민지의 것이고, 버튼을 누른 손은 이강토의 것이고, 치워진 사람은 정수경이다.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>단서</th><th>나오는 부</th><th>드러나는 것</th></tr></thead>
+    <tbody>
+      <tr><th>쉼표</th><td>5 · 6 · 7</td><td>탁용민의 문체 분석은 김민지를 가리킨다. 정음의 쉼표 규칙을 그녀가 자기 손버릇대로 짰기 때문이다</td></tr>
+      <tr><th>03:22 실행 로그</th><td>9</td><td>그녀가 소파에서 자던 시각, 누군가 그녀의 노트북으로 정음을 돌렸다. 랜선이 뽑혀 사내망 기록은 없다</td></tr>
+      <tr><th>03:41 접속 기록</th><td>9</td><td>최정남의 "랜선 뽑아"가 만든 구멍. 4장 파일을 받으려 랜선을 다시 꽂은 이강토만 찍혔다</td></tr>
+      <tr><th>열한 번</th><td>8 · 11</td><td>정음이 처음 센 숫자가 하루 전 고발글에 이미 있었다. 이강토가 수첩에 손으로 적어 온 박종두의 반대 횟수</td></tr>
+      <tr><th>보내지 않은 글</th><td>11</td><td>최정남, 장독고, 박종두도 썼다. 전송 버튼을 누른 사람만 범인이 된다</td></tr>
+      <tr class="hl"><th>기록 없는 사람</th><td>11 · 12</td><td>정수경은 이 회사 서버에 남긴 문장이 하나도 없다. 그래서 결백도 증명할 수 없다. 김민지는 증명할 로그를 갖고 있으면서 침묵한다</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">7.</span><h2>결말 — 반쯤</h2></div>
+  <p class="dek">진실은 나온다. 정의가 아니라 승계 싸움의 무기로. 아래로 내려갈수록 아무것도 바뀌지 않는다.</p>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><th>① 함도진</th><td>계열사 사장으로 <b>영전</b>. 자기 녹취를 짖음으로 듣는다</td></tr>
+      <tr><th>② 선우담</th><td>이긴다. 사장단 인사에서 한 칸 올라간다</td></tr>
+      <tr><th>③ 탁용민</th><td>대기발령. <b>꼬리로 잘린다</b></td></tr>
+      <tr><th>④ 나성필 · ⑤ 오세웅</th><td>아무 일 없다. 3분기 공문, 다음 주 새 번호표</td></tr>
+      <tr><th>정수경</th><td>돌아오지 않는다</td></tr>
+      <tr class="hl"><th>김민지 · 남해인</th><td>각자 한 사람의 이름을 부른다. 두 사람은 끝까지 만나지 않는다. <b>그 정도가 이긴 것이다</b></td></tr>
+    </tbody>
+  </table></div>
   <div class="callout">
-    <div class="co-label">11화 · 연출 지시 · 약 40행</div>
-    <div class="co-body">탕비실이 폭발하는 한가운데서 상무의 휴대폰이 울린다. 그는 복도로 나간다. 김민지가 정수기 쪽에서 그 30초를 본다. 통화하는 동안 그는 <strong>허리가 굽는다.</strong> 네, 네, 그렇습니다, 죄송합니다. 유리에 비친 형상이 잠깐 바뀐다. 전화가 끊긴다. 그가 돌아서기 전에 표정을 고치는 데 걸리는 시간은 2초다. 탕비실 문을 열고 들어올 때 그는 다시 상무다.</div>
-  </div>
-
-  <p>김민지는 이 장면을 누구에게도 말하지 않는다. 작가도 해설하지 않는다. 독자만 R3를 눈으로 확인하고, 그 뒤로 상무가 소리를 지를 때마다 복도의 30초가 겹쳐 보인다.</p>
-
-  <h3>왜 상무 자작극을 버렸나</h3>
-  <div class="scroll">
-    <table>
-      <thead><tr><th>문제</th><th>내용</th></tr></thead>
-      <tbody>
-        <tr><th>영리한 악역</th><td>상무가 독자까지 앞질러 계산했다는 설계다. 인물이 아니라 작가의 손이 보인다.</td></tr>
-        <tr><th>논리 오류</th><td>자기 고발은 꼬리 자르기를 늦추지 않는다. <b>앞당긴다.</b> 리스크 있는 임원이 먼저 정리된다.</td></tr>
-        <tr><th>면죄</th><td>나머지 넷이 순수 피해자가 된다. 그러면 12화에서 다섯이 함께 협력사 단가를 깎는 행위의 무게가 사라진다.</td></tr>
-        <tr><th>체감 거리</th><td>반전이 임원 정치 층위로 올라간다. 타깃 독자가 가장 살아보지 않은 세계다.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="callout">
-    <div class="co-label">고증 교정 · 전 부 적용</div>
-    <div class="co-body">회사는 익명 앱 작성자를 추적할 수 없다. 사내망은 전사가 공인 IP 하나를 공유하고, 개인 휴대폰으로 썼다면 사내 로그에도 남지 않는다. 그래서 회사는 <strong>추적하는 척하며 서로를 의심하게 만든다.</strong> 기술이 아니라 공포가 수사 도구다.</div>
+    <div class="co-label">마지막 장면 · 12부</div>
+    <div class="quote">수경 씨.</div>
+    <div class="co-body" style="margin-top:6px;font-size:16px">받는 사람 칸에 정수경, 본문 첫 줄에 한 단어. 그다음 문장은 아직 쓰지 않았다. 이 층에서 처음으로, 문장의 다음을 정하는 사람이 그녀다.</div>
   </div>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">6.</span><h2>인물</h2></div>
-  <p class="dek">시점 주인공은 부당 한 명으로 고정한다. 다섯을 균등 배분하면 아무도 깊어지지 않는다.</p>
-
-  <h3 style="color:var(--t1)">1부 — 묵산그룹 전략기획본부 15층</h3>
-  <div class="cast" style="--tw:var(--t1-wash)">
-    <div class="person lead">
-      <div><span class="pn">김민지</span><span class="pr">대리 · 33 · 시점 주인공</span></div>
-      <div class="pd">위아래가 동시에 보이는 유일한 위치. 직접 만든 텍스트 정제 매크로 <b>정음(正音)</b>이 짖음으로 지워진 말을 복원하는 유일한 도구가 된다. 정제에 중독되어 사람의 감정 자체를 노이즈로 취급한다. <b>1부에서는 무의식적으로 복원하고, 30화에서는 의식적으로 끝까지 읽는다.</b> 같은 행위의 반복이 캐릭터 아크다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">이강토</span><span class="pr">사원 · 28</span></div>
-      <div class="pd">입사 2년차. 익명 앱이 유일한 발화 수단. 고발글을 쓴 사람이자 자기가 썼다는 것을 모르는 사람.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">박종두</span><span class="pr">과장 · 41</span></div>
-      <div class="pd">대출 이자와 둘째. 분노 억압이 곧 직무라고 믿는다. 비상구에서 빗소리를 듣는 습관은 사람 목소리를 못 견디게 된 증상이다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">최정남</span><span class="pr">부장 · 48</span></div>
-      <div class="pd">임원 승진 마지막 갈림길. 아래를 밟는 것 말고 다른 생존법을 배운 적이 없다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">장독고</span><span class="pr">상무 · 53</span></div>
-      <div class="pd">임원이지만 오너 앞에서는 이미 완전히 개다. R3의 살아 있는 증거.</div>
-    </div>
+  <div class="sec-head"><span class="sec-num">8.</span><h2>문체 — 실측</h2></div>
+  <p class="dek">짧은 호흡을 금지하고 대화 비중을 올렸다. 목표는 대화 35~45%였다. 실측은 28~32%에서 멈췄다. 회상과 문서 읽기 장면이 많은 이 작품에서 현실적인 선으로 판단했다. 빨간 선이 35% 목표다.</p>
+  <div class="bars" role="img" aria-label="부별 대화 비중 막대그래프">
+    <div class="bar"><span>1부</span><span class="track"><span class="fill" style="width:62.2%"></span><span class="goal" style="left:70%"></span></span><span class="v">31.1%</span></div>
+    <div class="bar"><span>2부</span><span class="track"><span class="fill" style="width:56.2%"></span><span class="goal" style="left:70%"></span></span><span class="v">28.1%</span></div>
+    <div class="bar"><span>3부</span><span class="track"><span class="fill" style="width:63%"></span><span class="goal" style="left:70%"></span></span><span class="v">31.5%</span></div>
+    <div class="bar"><span>4부</span><span class="track"><span class="fill" style="width:62.2%"></span><span class="goal" style="left:70%"></span></span><span class="v">31.1%</span></div>
+    <div class="bar"><span>5부</span><span class="track"><span class="fill" style="width:61.6%"></span><span class="goal" style="left:70%"></span></span><span class="v">30.8%</span></div>
+    <div class="bar"><span>6부</span><span class="track"><span class="fill" style="width:58%"></span><span class="goal" style="left:70%"></span></span><span class="v">29.0%</span></div>
+    <div class="bar"><span>7부</span><span class="track"><span class="fill" style="width:57.2%"></span><span class="goal" style="left:70%"></span></span><span class="v">28.6%</span></div>
+    <div class="bar"><span>8부</span><span class="track"><span class="fill" style="width:60%"></span><span class="goal" style="left:70%"></span></span><span class="v">30.0%</span></div>
+    <div class="bar"><span>9부</span><span class="track"><span class="fill" style="width:58.8%"></span><span class="goal" style="left:70%"></span></span><span class="v">29.4%</span></div>
+    <div class="bar"><span>10부</span><span class="track"><span class="fill" style="width:58.8%"></span><span class="goal" style="left:70%"></span></span><span class="v">29.4%</span></div>
+    <div class="bar"><span>11부</span><span class="track"><span class="fill" style="width:61.2%"></span><span class="goal" style="left:70%"></span></span><span class="v">30.6%</span></div>
+    <div class="bar"><span>12부</span><span class="track"><span class="fill" style="width:58.4%"></span><span class="goal" style="left:70%"></span></span><span class="v">29.2%</span></div>
   </div>
-
-  <h3 style="color:var(--t2)">2부 — (주)율목정밀 · 직원 9명</h3>
-  <div class="cast" style="--tw:var(--t2-wash)">
-    <div class="person lead">
-      <div><span class="pn">윤소라</span><span class="pr">사무직 · 28 · 시점 주인공</span></div>
-      <div class="pd">직함은 하나인데 경리·총무·품질서류·납품관리·사장 개인 심부름을 겸한다. <b>'겸'이 다섯 개.</b> 업무 경계가 없고, 그래서 책임 경계도 없다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">구본철</span><span class="pr">사장 · 59</span></div>
-      <div class="pd">직원에게는 폭군, 원청에게는 개. R3의 두 번째 증거.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">조태산</span><span class="pr">현장반장 · 55</span></div>
-      <div class="pd">납기 단축이 곧 사고임을 아는 유일한 사람. 그 말을 할 때마다 짖음으로 변한다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">하민우</span><span class="pr">설계대리 · 31</span></div>
-      <div class="pd">대기업 탈락 후 여기로. 늘 이직 준비 중. 이강토의 대학 동기.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">김단</span><span class="pr">신입 · 24</span></div>
-      <div class="pd">입사 4개월. 아직 짖음이 들리지 않는다. 2부에서 들리기 시작한다. 그게 성인식이다.</div>
-    </div>
-  </div>
-
-  <h3 style="color:var(--t3)">3부 — 야간 물류 · 취업준비 · 낮밤 교차</h3>
-  <div class="cast" style="--tw:var(--t3-wash)">
-    <div class="person lead">
-      <div><span class="pn">남해인</span><span class="pr">25 · 취준 3년차 · 시점 주인공</span></div>
-      <div class="pd">낮에는 자소서, 밤에는 물류. 그가 들어간 야간 라인이 바로 1부의 그 공문이 만든 자리다. 묵산그룹 최종면접에서 탈락하고, 불합격 메일에 잘못 붙어 온 내부 메모 한 줄을 본다 — <b>"현실감 부족"</b>. 배치표에서 그의 이름은 <b>14번</b>이다.</div>
-    </div>
-    <div class="person">
-      <div><span class="pn">09번 — 민석</span><span class="pr">18 · 야간 라인</span></div>
-      <div class="pd">25화에서 반장이 말한다. "이름 외우지 마세요." 그래서 그는 09번이다. 30화에서 남해인이 그의 말을 세 번 못 알아듣고, 그제야 <b>이름을 묻는다.</b> "민석 씨." 그러자 들린다. <b>R4가 3부에서 먼저 터진다.</b></div>
-    </div>
-    <div class="person">
-      <div><span class="pn">동료들</span><span class="pr">번호로 불리는 사람들</span></div>
-      <div class="pd">각자 한 문장씩만 준다. <b>연민의 대상으로 소비하지 않는 것이 3부 집필 제1원칙.</b></div>
-    </div>
-  </div>
+  <div class="note">눈금 0~50% · 측정은 따옴표 안 글자 ÷ 본문 글자(삽입 문서·굵은 인용 제외). 8부는 복원된 회의록 속 대사가 굵은 인용이라 실제 읽히는 대화량은 더 많다. 서술 중 한 문장 문단 6~24%(기준 25% 이하 충족).</div>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">7.</span><h2>32화 구성</h2></div>
-  <p class="dek">1부가 독자를 붙잡고, 2부가 가장 세고, 3부는 짧고 조용하게 끝낸다. 표시된 화는 장치 규칙이 작동하거나 구조가 꺾이는 지점이다.</p>
-
-  <div class="part" style="--tc:var(--t1);--tw:var(--t1-wash)">
-    <div class="part-head"><span class="part-no">1</span><span class="part-name">묵산타워 15층, 김민지 대리 — 금 17:40 → 월 08:00</span><span class="part-count">12화 · 38%</span></div>
-    <ol class="beats">
-      <li><span class="n">01</span><span class="t">금 17:40</span><span class="d">퇴근 20분 전. 상무의 메신저 폭탄. 시계 초침, 키보드, 심박수.</span></li>
-      <li><span class="n">02</span><span class="t">금 19:00</span><span class="d">다섯 명만 남은 15층. 불 꺼진 빌딩. 밀실 성립, 타임리미트 발동.</span></li>
-      <li><span class="n">03</span><span class="t">금 23:40</span><span class="d">김민지의 기시감 — 회의록 누락을 <b>몇 주 전에 이미 봤다</b>는 기억이 스친다.</span></li>
-      <li class="key"><span class="n">04</span><span class="t">토 09:00</span><span class="d"><b>R1 제시.</b> 같은 대화를 정반대로 기억하는 두 사람.</span></li>
-      <li><span class="n">05</span><span class="t">토 14:00</span><span class="d">익명 앱에 「단가 압박·폭언 실태」 고발글 폭발.</span></li>
-      <li><span class="n">06</span><span class="t">토 17:00</span><span class="d">추적 불가. 상무의 블러핑 — "IT실에서 뽑고 있다." 퇴근 금지 선언.</span></li>
-      <li><span class="n">07</span><span class="t">토 22:00</span><span class="d">스파이 게임. 서로의 화면·메신저·휴대폰. 첫 환영.</span></li>
-      <li class="key"><span class="n">08</span><span class="t">일 02:00</span><span class="d">정음의 복원 기능을 <b>기억해낸다.</b> 지워진 문장들이 돌아온다. <b>R2 확정.</b></span></li>
-      <li><span class="n">09</span><span class="t">일 11:00</span><span class="d">복원 기록 — 누구도 침묵한 적 없다. 전부 말했고 전부 지워졌다. <b>R3 작동.</b></span></li>
-      <li><span class="n">10</span><span class="t">일 19:00</span><span class="d">접속 시간대로 이강토가 몰린다. 진심으로 부인한다. 독자도 그를 믿는다.</span></li>
-      <li class="key"><span class="n">11</span><span class="t">일 23:00</span><span class="d">탕비실 폭발. <b>복도 30초</b> — 상무의 무력함이 잠깐 보인다. <b>R4 최초 발동</b> — 누군가 처음 이름을 부른다.</span></li>
-      <li class="key"><span class="n">12</span><span class="t">월 02→08</span><span class="d"><b>반전: 복원된 회의록.</b> 그리고 기획서 제출. 3장 2절을 아무도 읽지 않는다.</span></li>
-    </ol>
-  </div>
-
-  <div class="part" style="--tc:var(--t2);--tw:var(--t2-wash)">
-    <div class="part-head"><span class="part-no">2</span><span class="part-name">율목정밀, 윤소라 사무직 — 3주 후, 한 달간</span><span class="part-count">10화 · 31%</span></div>
-    <ol class="beats">
-      <li><span class="n">13</span><span class="t">1일차</span><span class="d">A4 한 장 공문이 팩스로 도착한다. 윤소라가 받는다.</span></li>
-      <li><span class="n">14</span><span class="t">1일차</span><span class="d">사장실. 구본철이 수화기를 들었다 놓는다. 거부 불가.</span></li>
-      <li class="key"><span class="n">15</span><span class="t">2일차</span><span class="d">전 직원 회의. 조태산 — "납기 5일 줄이면 사람이 다칩니다." <b>→ 짖음.</b></span></li>
-      <li class="key"><span class="n">16</span><span class="t">4일차</span><span class="d">윤소라의 '겸' 다섯 개. 하루 일과로 한 화 전체. <b>블랙코미디 정점.</b></span></li>
-      <li><span class="n">17</span><span class="t">7일차</span><span class="d">하민우, 익명 앱에 쓰려다 멈춘다. 직원 9명. 쓰는 순간 특정된다.</span></li>
-      <li class="key"><span class="n">18</span><span class="t">9일차</span><span class="d">구본철이 원청 담당자 앞에서 완전히 개가 된다. 윤소라가 목격한다. <b>R3.</b></span></li>
-      <li><span class="n">19</span><span class="t">12일차</span><span class="d">김단에게 처음 짖음이 들린다. 품질 서류 조작 지시. 윤소라의 서명란.</span></li>
-      <li><span class="n">20</span><span class="t">16일차</span><span class="d">조태산이 반대를 문서로 남긴다. 다음 장에서 그 문서가 미끄러진다.</span></li>
-      <li><span class="n">21</span><span class="t">23일차</span><span class="d">야간 특근 한계. 단기 인력 투입 결정. 소규모 사고. 은폐.</span></li>
-      <li><span class="n">22</span><span class="t">30일차</span><span class="d">납기 달성. 원청 감사패 수여. 윤소라는 그 감사패를 닦는 일도 겸한다.</span></li>
-    </ol>
-  </div>
-
-  <div class="part" style="--tc:var(--t3);--tw:var(--t3-wash)">
-    <div class="part-head"><span class="part-no">3</span><span class="part-name">야간 라인, 14번 — 6월 22일 → 8월 10일 · 낮밤 교차</span><span class="part-count">10화 · 31%</span></div>
-    <ol class="beats">
-      <li><span class="n">23</span><span class="t">6/22 월</span><span class="d">낮은 자소서, 밤은 물류. <b>이력서에 적을 수 없는 시간</b>만 쌓인다.</span></li>
-      <li><span class="n">24</span><span class="t">6/25 목</span><span class="d">계약서를 달라고 묻지 못한다. 급여명세서의 회사 이름이 조끼 등판과 다르다.</span></li>
-      <li class="key"><span class="n">25</span><span class="t">6/29 월</span><span class="d">반장의 한마디 — <b>"이름 외우지 마세요."</b> 열여덟 살은 09번, 남해인은 14번이 된다.</span></li>
-      <li><span class="n">26</span><span class="t">7/2 목</span><span class="d">배달 위탁. <b>"본 계약은 근로계약이 아니며."</b> 사고는 스스로 책임진다.</span></li>
-      <li><span class="n">27</span><span class="t">7/8 수</span><span class="d">묵산그룹 서류 합격 문자. 정장 권장, 30분 전 도착, 교통비는 지급되지 않음.</span></li>
-      <li><span class="n">28</span><span class="t">7/15 수</span><span class="d">묵산타워 11층 면접. <b>「협력사 상생 방안」</b>에 성실하게 답한다. 22분.</span></li>
-      <li class="key"><span class="n">29</span><span class="t">7/21 화</span><span class="d">불합격 메일. 잘못 붙어 온 내부 메모 한 줄 — <b>"현실감 부족".</b></span></li>
-      <li class="key"><span class="n">30</span><span class="t">7/27 월</span><span class="d">09번의 말이 세 번 들리지 않는다. 그리고 <b>이름을 묻는다.</b> "민석 씨." <b>R4가 3부에서 먼저 터진다.</b></span></li>
-      <li><span class="n">31</span><span class="t">8/3 월</span><span class="d">유리 아래쪽을 본다. 거기에도 아무것도 없다. <b>부재로 표시되는 짖음.</b></span></li>
-      <li class="key"><span class="n">32</span><span class="t">8/10 월</span><span class="d">복원된 회의록이 김민지에게 닿는다. <b>「어디서 개가 짖나」가 회수된다.</b></span></li>
-    </ol>
-  </div>
-  </section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">8.</span><h2>결말</h2></div>
-  <p class="dek">아무것도 해결되지 않는다. 묵산그룹도 율목정밀도 그대로다. 남해인은 여전히 취준생이다. 김민지는 복원된 회의록의 마지막 한 줄을 끝까지 읽는다. 미끄러지지 않는다. 그게 전부다. R4 때문에 이 해제는 지속되지 않는다 — 그녀는 내일 또 누군가의 말을 개소리로 들을 것이다. 그래도 오늘은 읽었다.</p>
-  <p>해제는 3부에서 <b>먼저</b> 일어난다. 30화에서 남해인이 09번의 이름을 묻고 그 말이 들리는 순간이다. 32화의 김민지는 두 번째다. 아래에서 먼저 풀리고 위가 뒤따르는 순서를 바꾸지 않았다.</p>
-
-  <div class="callout">
-    <div class="co-label">채택 · 32화 「수신자」</div>
-    <div class="co-body">김민지가 답장 창을 열고 <strong>수신자 이름을 타이핑하는 것</strong>으로 끝낸다. R4의 최소 실행. 마지막 화의 제목이 곧 그 행위다.</div>
-  </div>
-  <div class="callout">
-    <div class="co-label">폐기한 후보</div>
-    <div class="co-body">누군가 습관처럼 "어디서 개가 짖는구나"라고 말하고 다른 누군가가 답하는 안 — "아니요. 사람이 말하고 있습니다." <strong>말이 너무 친절해서 버렸다.</strong></div>
-  </div>
+  <div class="sec-head"><span class="sec-num">9.</span><h2>사연과 고유명사</h2></div>
+  <p>블라인드·화제 사연 32건을 부마다 한두 건씩 배치했다. 글을 옮기지 않고, 실존 회사와 엮지 않고, <b>일이 벌어지는 모양</b>만 가져왔다. 수능 선물 8천 원에 카드는 한 사람 이름, 주 14시간 59분 쪼개기 계약, 예비 합격 3주 뒤 취소, 화장실 비밀번호는 영수증에, 법카로 산 시계가 두 사람 사이를 한 바퀴.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>이름</th><th>무엇</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><th>묵산그룹 默山</th><td>대기업</td><td>침묵하는 산. 작중에서 풀지 않는다</td></tr>
+      <tr><th>율목정밀 栗木</th><td>2차 협력사</td><td>사장의 고향 마을 이름. 그 마을은 지금 없다</td></tr>
+      <tr><th>카페 묵</th><td>묵산 계열 카페</td><td>4월 묵산타워점, 6월 합정점. 지현의 일터</td></tr>
+      <tr><th>복도 · 정음 正音</th><td>익명 앱 · 매크로</td><td>정음은 바른 소리. 지워진 줄을 되살린다</td></tr>
+      <tr><th>온빛 · DK · 이룸</th><td>물류의 세 이름</td><td>공고, 조끼, 급여명세서가 다 다르다. 잊어버리는 것이 요점이다</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <section>
-  <div class="sec-head"><span class="sec-num">9.</span><h2>흡인력 장치</h2></div>
-  <div class="rules">
-    <div class="rule">
-      <div class="rule-top"><span class="rid">01</span><span class="rname">매 화 끝에 사내 문서 한 장</span></div>
-      <p>회의록 · 메신저 로그 · 협력사 공문 · 근무일지 · 품질검사 성적서 · 채용 탈락 메일. 독자는 본문에서 인물의 말을 읽고, 다음 장에서 그 말이 문서에서 사라진 것을 <strong>직접 목격한다.</strong> 작가는 지적하지 않는다.</p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">02</span><span class="rname">첫 3페이지에 독자 자신의 사무실</span></div>
-      <p>금요일 17:40, 퇴근 준비 중 울리는 메신저. 변주 없이 정공법으로 쓴다. 기존 기획안의 가장 좋은 자산이다.</p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">03</span><span class="rname">직급 언어의 정밀도</span></div>
-      <p>"확인 부탁드립니다"의 온도차, "가능하실까요?"가 명령인 상황, 금요일 저녁 "고생 많으셨습니다"의 공포. <strong>보편적 감정을 쓰면 아무도 자기 얘기로 읽지 않는다.</strong></p>
-    </div>
-    <div class="rule">
-      <div class="rule-top"><span class="rid">04</span><span class="rname">웃음이 사라지는 속도</span></div>
-      <p>1부 전반은 실소, 2부 16화가 최고조, 3부는 거의 제거한다. <strong>웃음이 빠지는 속도 자체가 계급 하강의 체감 지표</strong>가 된다.</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">10.</span><h2>삽입 문서</h2></div>
-  <p class="dek">각 화 끝에 그 화를 지배한 서류 한 장이 붙는다. 30개 전부 실제 양식으로 조판했다. 본문은 명조, 문서는 고딕이라 페이지를 넘기면 종이가 바뀐 것처럼 보인다. 이야기가 하지 않는 말을 서류가 대신 한다.</p>
-
-  <div class="scroll">
-    <table>
-      <thead><tr><th>양식</th><th>어디에</th><th>무엇이 보이나</th></tr></thead>
-      <tbody>
-        <tr><td>임원간담회의록</td><td>9화</td><td>대외비 표기. 논의란이 전부 <b>「의견 개진 있었음」</b>. 결정사항 <b>없음</b>. 소요시간 2시간 40분</td></tr>
-        <tr><td>원가구조 혁신 기획서</td><td>12화</td><td>결재란 네 칸. 3장 2절에 단가 8% 인하와 납기 5일 단축. 240면 중 68면</td></tr>
-        <tr><td>업무분장표</td><td>16화</td><td>다른 사람은 한 줄, <b>윤소라 칸만 다섯 줄</b>. 최종 갱신 2023년</td></tr>
-        <tr><td>조직도</td><td>17화</td><td><b>중간 직급이 비어 있다.</b> 대표이사 다음이 곧 사원이다</td></tr>
-        <tr><td>품질검사 성적서</td><td>19화</td><td>확인자 윤소라 (인). <b>30화에 같은 문서가 바이트 단위로 다시 나온다</b></td></tr>
-        <tr><td>의견서</td><td>20화</td><td>조태산이 반대를 문서로 남긴다. <b>대표이사 결재칸은 비어 있다</b></td></tr>
-        <tr><td>면접 평가표</td><td>28화</td><td>조직 적합성만 C, 종합 B. <b>비고란 공란</b></td></tr>
-        <tr><td>불합격 메일</td><td>29화</td><td>의례적인 본문 아래 <b>잘못 붙어 온 내부 메모</b> — 비고: 현실감 부족</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="note" style="margin-top:20px">
-    <b>회수 장치.</b> 28화 면접 평가표의 빈 비고란은 29화 내부 메모에서 채워지고, 19화에 윤소라가 도장을 찍은 성적서는 30화에서 남해인이 든 박스에 그대로 붙어 돌아온다. 두 문서는 내용이 한 글자도 다르지 않다.
-  </div>
-</section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">11.</span><h2>고유명사</h2></div>
-  <p class="dek">실존 상호와 부딪히지 않도록, 기업이 잘 쓰지 않는 글자를 넣고 <b>작중에서 뜻을 설명하지 않는다.</b> 눈치챈 독자만 안다.</p>
-
-  <div class="scroll">
-    <table>
-      <thead><tr><th>대상</th><th>이름</th><th>비고</th></tr></thead>
-      <tbody>
-        <tr><td>대기업</td><td><b>묵산그룹</b> 默山</td><td>침묵하는 산. 작중에서 한 번도 풀지 않는다</td></tr>
-        <tr><td>2차 협력사</td><td><b>율목정밀</b> 栗木</td><td>구본철의 고향 마을 이름. <b>그 마을은 지금 없다</b></td></tr>
-        <tr><td>익명 앱</td><td><b>복도</b></td><td>회사에서 진짜 말이 오가는 곳. 실명 서비스를 쓰지 않는다</td></tr>
-        <tr><td>매크로</td><td><b>정음</b> 正音</td><td>바른 소리. 발언자 표기를 지우는 것이 이것이다</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="note" style="margin-top:20px">
-    <b>3부 물류는 이름이 세 개다.</b> 구인 앱 공고는 <b>온빛로지스</b>, 조끼 등판은 <b>DK로지스틱스</b>, 급여명세서는 <b>주식회사 이룸에이치알</b>. 원청·물류사·인력공급업체가 각각 다르기 때문이다. 남해인은 자기가 어디 소속인지 모른다. 24화와 30화가 이 세 이름 위에서 성립한다. <b>셋 다 잊어버려도 되는 이름이고, 잊어버리는 것이 요점이다.</b>
-  </div>
-</section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">12.</span><h2>분량과 리스크</h2></div>
-  <p class="dek">탈고 기준 32화 · 106,829자. 신국판 152×225mm, 나눔명조 10.5pt, 행간 210%, 양쪽맞춤에 음절 단위 줄바꿈으로 조판했다. 한 행 32자 · 한 면 24행. 무선제본을 감안해 여백은 <b>안쪽 19mm · 바깥 14mm</b>로 좌우 면을 뒤집었고, 고딕은 시스템 폰트 대신 나눔고딕을 써서 <b>전 페이지를 Type0로 임베딩</b>했다. 화가 시작하는 면은 위를 46mm 비워 「여기서 새로 시작한다」를 보이되, 본문이 같은 면에서 이어져 리듬이 끊기지 않게 했다. 장 도비라를 따로 두는 안(272면)은 화가 평균 7~8면으로 짧아 책이 부풀려 보이고 부 도비라의 무게까지 가벼워져 버렸다. 본문 255면에 작가의 말 4면, 부 도비라를 오른쪽 면에 맞추려 끼운 백면 2면, 앞붙이 4면(속표지·백면·차례 2면)을 더해 완성본은 <b>264면</b>이다. 행간은 190%에서 시작했으나 지면이 빽빽해 210%로 넓혔다. 면수가 20면 늘어난 대신 한 면이 24행으로 내려가 신국판 문학서의 표준 밀도에 들어왔다.</p>
-
-  <dl class="risk">
-    <div><dt>익명 커뮤니티 실명</dt><dd>가상 앱명을 쓴다. 실명 서비스에 허위 비위를 결합하지 않는다.</dd></div>
-    <div><dt>IP 추적 묘사</dt><dd>추적 가능하게 쓰면 실무자 독자가 즉시 이탈한다. 블러핑으로 처리한다.</dd></div>
-    <div><dt>실존 기업 식별</dt><dd>묵산그룹·율목정밀 모두 가상. 업종·지역·규모 조합이 특정 기업을 지목하지 않도록 검수한다.</dd></div>
-    <div><dt>산재·사고 묘사</dt><dd>21화. 선정적 묘사 금지. <strong>은폐의 행정 절차를 건조하게</strong> 쓰는 것이 훨씬 무섭다.</dd></div>
-    <div><dt>취약 노동자 재현</dt><dd>25·26·30화. 한 문장씩만, 시선을 아래로 두지 않는다. 09번에게는 <strong>이름을 돌려준다.</strong></dd></div>
-    <div><dt>장치 수위</dt><dd>현상의 원인을 끝까지 설명하지 않는다. 규칙만 일관되게 지킨다. 설명하는 순간 장치가 죽는다.</dd></div>
-  </dl>
-</section>
-
-<section>
-  <div class="sec-head"><span class="sec-num">13.</span><h2>진행 현황</h2></div>
-  <ol class="beats" style="--tc:var(--stamp);--tw:var(--stamp-wash);margin-top:22px">
-    <li><span class="n">01</span><span class="t">완료</span><span class="d">기획 v2.4 · 1~3부 비트시트 · 인물별 발화 샘플 · 32화 스토리보드</span></li>
-    <li><span class="n">02</span><span class="t">완료</span><span class="d">32화 전편 집필 — 106,829자. 부별 교정·교열 3회 (시간 역행 · 인과 · 인원 · 수치)</span></li>
-    <li><span class="n">03</span><span class="t">완료</span><span class="d">문장 밀도 조정 — 서술문장 평균 21.7~24.2자, 1문장 문단 45~57%로 재배분</span></li>
-    <li><span class="n">04</span><span class="t">완료</span><span class="d">삽입 문서 30종을 실제 양식으로 재조판</span></li>
-    <li class="key"><span class="n">05</span><span class="t">완료</span><span class="d">부 제목 확정 · 완성본 조판 — <b>264면</b>, 차례 · 쪽번호 · 작가의 말 · 오른쪽 면 도비라</span></li>
-    <li><span class="n">06</span><span class="t">남음</span><span class="d">표지 · EPUB · ISBN · 납본 · 유통</span></li>
+  <div class="sec-head"><span class="sec-num">10.</span><h2>진행 현황</h2></div>
+  <ol class="done">
+    <li><span>완료</span>기획안 v3 · 빌런 5 · 제목 5겹 · 12부 배치</li>
+    <li><span>완료</span>12부 전편 집필 · 부마다 연속성 교정(날짜·인원·근속·수치)</li>
+    <li><span>완료</span>6~12부 대화 보강 · 조판 도구 수정(문서 뒤 본문 누락 버그)</li>
+    <li><span>완료</span>완성본 조판 249면 — 차례 · 쪽번호 · 북마크 · 작가의 말(v3 개정)</li>
+    <li class="todo"><span>남음</span>전편 퇴고 · 표지 · EPUB · ISBN · 유통</li>
   </ol>
 </section>
 
 <footer>
-  <div><b>기획-002 · v2.4</b> — 탈고본. <b>novel_handover_guide.md</b>(v1)를 대체함.</div>
-  <div>제1부 묵산타워 15층, 김민지 대리 · 제2부 율목정밀, 윤소라 사무직 · 제3부 야간 라인, 14번</div>
-  <div>32화 106,829자 / 신국판 264면 · 1부 반전 「복원된 회의록」(A+E) + 보조 겹(B) · 상무 무력함은 11화 복도 30초</div>
-  <div class="stampmark">탈 고</div>
+  <div><b>기획-003 · v3.1</b> — 3부 32화판(기획-002 v2.4, 태그 v1-3부32화)을 대체함.</div>
+  <div>제1부 랜선 뽑아 · 제2부 이거 전에도 봤는데 · 제3부 상무님 지금 회의 중이십니다 · 제4부 월요일 여덟 시까지 범인 · 제5부 직원 9명, 급여대장 10명 · 제6부 물 좀 주세요 · 제7부 정확해서 1% 더 깎였다 · 제8부 어디서 개가 짖나 · 제9부 현실감 부족 · 제10부 이름 외우지 마세요 · 제11부 짖은 개를 치우는 게 중요하지 · 제12부 어디서 개가 짖는구나</div>
+  <div class="stampmark">초 고 완 료</div>
 </footer>
-
 </div>
+
+</body></html>
