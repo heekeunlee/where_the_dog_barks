@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>어디서 개가 짖는구나</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 밝은 화면 고정. layout: 결재 서류 한 장 위에 이야기를 순서대로 — 세 주인공은 세 가지 색 */
+:root{
+  color-scheme:light;
+  --paper:#EDEFF2; --surface:#FFFFFF; --surface-2:#F4F6F8;
+  --ink:#191F27; --ink-2:#4F5863; --ink-3:#848C97;
+  --rule:#C9CED5; --rule-soft:#DDE1E6;
+  --t1:#3E5C76; --t2:#8A5233; --t3:#4C5059;
+  --t1-wash:#3E5C7614; --t2-wash:#8A523314; --t3-wash:#4C505914;
+  --stamp:#A8332B; --stamp-wash:#A8332B12; --on-ink:#FFFFFF;
+  --display:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo",serif;
+  --body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-weight:400;font-size:16px;line-height:1.8;margin:0;padding-block:0;padding-inline:16px;-webkit-font-smoothing:antialiased;word-break:keep-all}
+.sheet{max-width:820px;margin:0 auto;background:var(--surface);border-inline:1px solid var(--rule-soft);padding-block:0 72px;padding-inline:clamp(18px,5vw,56px)}
+@media (max-width:520px){body{padding-inline:0}.sheet{border-inline:0}}
+.label{font-size:12px;font-weight:500;color:var(--ink-3);letter-spacing:.02em}
+/* masthead */
+.mast{padding-block:40px 0}
+.topline{display:flex;flex-wrap:wrap;gap:4px 18px;padding-bottom:14px;border-bottom:1px solid var(--ink);font-size:12px;color:var(--ink-3)}
+.topline b{color:var(--ink-2);font-weight:500}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,9vw,66px);line-height:1.1;margin:26px 0 0;text-wrap:balance}
+.kind{margin-top:12px;font-size:14px;color:var(--ink-3)}
+.oneline{font-family:var(--display);font-weight:500;font-size:clamp(18px,3.4vw,22px);line-height:1.7;margin:24px 0 0;padding-left:18px;border-left:3px solid var(--stamp);max-width:34em}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.facts span{font-size:13px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--rule-soft);padding:3px 10px}
+/* sections */
+section{padding-block:56px 0}
+.q{font-size:13px;font-weight:500;color:var(--stamp);margin:0}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,4.6vw,31px);line-height:1.35;margin:6px 0 0;text-wrap:balance}
+.lead{color:var(--ink-2);max-width:36em;margin:14px 0 0}
+p{max-width:36em;margin:14px 0 0}
+strong{font-weight:700}
+.hl{background:var(--stamp-wash);color:var(--stamp);font-weight:500;padding:0 3px}
+/* demo */
+.demo{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+.demo>div{background:var(--surface);padding:18px 18px 20px;min-width:0}
+.demo .who{font-size:12.5px;color:var(--ink-3);font-weight:500}
+.demo .said{font-family:var(--display);font-weight:600;font-size:18px;line-height:1.55;margin-top:8px}
+.demo .heard{font-family:var(--display);font-weight:700;font-size:22px;color:var(--stamp);margin-top:8px;letter-spacing:.04em}
+.demo .after{grid-column:1/-1;background:var(--surface-2);font-size:14px;color:var(--ink-2);padding:14px 18px}
+@media (max-width:560px){.demo{grid-template-columns:1fr}}
+.points{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:10px;max-width:36em}
+.points li{padding-left:22px;position:relative;font-size:15px;color:var(--ink-2)}
+.points li::before{content:"";position:absolute;left:4px;top:.75em;width:7px;height:7px;background:var(--stamp)}
+.points li b{color:var(--ink)}
+/* heroes */
+.heroes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
+.hero{background:var(--surface);padding:20px 18px 22px;border-top:4px solid var(--tc);min-width:0;display:flex;flex-direction:column;gap:8px}
+.hero .nm{font-family:var(--display);font-weight:700;font-size:22px}
+.hero .role{font-size:13px;color:var(--tc);font-weight:500}
+.hero .where{font-size:13px;color:var(--ink-3)}
+.hero .story{font-size:14.5px;color:var(--ink-2);line-height:1.7}
+.hero .line{font-family:var(--display);font-weight:600;font-size:15px;color:var(--ink);border-top:1px dashed var(--rule);padding-top:10px;margin-top:auto}
+@media (max-width:680px){.heroes{grid-template-columns:1fr}}
+/* fall */
+.fall{display:grid;grid-template-columns:minmax(0,1fr);margin-top:24px}
+.step{display:grid;grid-template-columns:120px 1fr;gap:16px}
+.step .at{font-size:12.5px;color:var(--tc);font-weight:500;text-align:right;padding:14px 14px 0 0;border-right:3px solid var(--tc);line-height:1.5}
+.step .at small{display:block;color:var(--ink-3);font-weight:400}
+.step .what{padding:12px 0 14px;min-width:0}
+.step .big{font-family:var(--display);font-weight:600;font-size:clamp(17px,3.2vw,20px);line-height:1.5}
+.step .sm{font-size:14px;color:var(--ink-2);margin-top:4px}
+.arrow{margin-left:136px;font-size:12.5px;color:var(--ink-3);padding:2px 0 4px}
+.arrow::before{content:"↓  ";color:var(--stamp)}
+@media (max-width:520px){.step{grid-template-columns:86px 1fr;gap:10px}.step .at{padding-right:8px;font-size:11.5px}.arrow{margin-left:96px}}
+/* timeline */
+.tl{margin-top:26px}
+.tl-axis{position:relative;height:24px;border-bottom:1px solid var(--rule);margin-left:96px}
+.tl-axis span{position:absolute;bottom:4px;font-size:11.5px;color:var(--ink-3)}
+.tl-row{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center;margin-top:12px}
+.tl-row .lab{font-size:13px;font-weight:500;color:var(--tc);text-align:right;line-height:1.3}
+.tl-row .lab small{display:block;color:var(--ink-3);font-weight:400;font-size:11.5px}
+.tl-track{position:relative;height:28px;background:var(--surface-2)}
+.tl-bar{position:absolute;top:6px;height:16px;background:var(--tc);min-width:7px}
+.tl-mark{position:absolute;top:-8px;bottom:-8px;border-left:1.5px dashed var(--stamp)}
+.tl-mark i{position:absolute;top:-18px;left:5px;white-space:nowrap;font-style:normal;font-size:11px;font-weight:500;color:var(--stamp)}
+.tl-note{margin:16px 0 0 96px;font-size:14px;color:var(--ink-2);max-width:none}
+@media (max-width:520px){.tl-axis,.tl-note{margin-left:74px}.tl-row{grid-template-columns:66px 1fr}}
+/* people */
+.ppl{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:18px}
+.p{background:var(--surface);padding:14px 16px;display:grid;grid-template-columns:170px 1fr;gap:4px 18px;align-items:baseline}
+.p .n{font-weight:700;font-size:15px}
+.p .r{display:block;font-size:12.5px;color:var(--ink-3);font-weight:400;margin-top:2px}
+.p .d{font-size:14.5px;color:var(--ink-2);min-width:0}
+.p.bad{background:var(--stamp-wash)}
+.p.bad .n{color:var(--stamp)}
+@media (max-width:560px){.p{grid-template-columns:1fr}}
+h3{font-size:16px;font-weight:700;margin:30px 0 0}
+/* acts */
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
+.act{background:var(--surface);padding:18px;min-width:0}
+.act .no{font-size:12.5px;font-weight:500;color:var(--stamp)}
+.act .tt{font-family:var(--display);font-weight:700;font-size:19px;margin-top:4px}
+.act .tx{font-size:14.5px;color:var(--ink-2);margin-top:8px;line-height:1.7}
+@media (max-width:680px){.acts{grid-template-columns:1fr}}
+/* toc */
+ol.toc{list-style:none;margin:22px 0 0;padding:0;border-top:2px solid var(--ink)}
+ol.toc li{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule-soft)}
+ol.toc .no{font-family:var(--display);font-weight:700;font-size:15px;color:var(--ink-3);padding-top:2px}
+ol.toc .tt{font-family:var(--display);font-weight:700;font-size:17px}
+ol.toc .tx{font-size:14px;color:var(--ink-2);margin-top:2px}
+ol.toc li.key .no,ol.toc li.key .tt{color:var(--stamp)}
+/* title meaning */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:24px}
+.pair>div{background:var(--surface);padding:20px;min-width:0}
+.pair .w{font-family:var(--display);font-weight:700;font-size:clamp(22px,4.4vw,28px)}
+.pair .w em{font-style:normal;color:var(--stamp)}
+.pair .x{font-size:14.5px;color:var(--ink-2);margin-top:10px}
+@media (max-width:560px){.pair{grid-template-columns:1fr}}
+.track5{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:22px}
+.track5 div{border:1px solid var(--rule-soft);padding:10px 8px;background:var(--surface-2);min-width:0}
+.track5 .bu{font-size:11.5px;color:var(--ink-3);font-weight:500}
+.track5 .wh{font-size:13.5px;font-weight:700;margin-top:2px}
+.track5 .ho{font-size:12px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+.track5 div.hot{border-color:var(--stamp);background:var(--stamp-wash)}
+.track5 div.hot .bu,.track5 div.hot .wh{color:var(--stamp)}
+@media (max-width:680px){.track5{grid-template-columns:repeat(2,1fr)}}
+/* spoiler */
+details{margin-top:24px;border:1px solid var(--ink)}
+summary{cursor:pointer;padding:14px 18px;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary span{font-weight:400;font-size:13px;color:var(--stamp)}
+details[open] summary span::after{content:" (펼침)"}
+summary:focus-visible{outline:2px solid var(--stamp);outline-offset:2px}
+.spoil{padding:0 18px 20px}
+.spoil table{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:6px}
+.spoil td,.spoil th{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.spoil th{white-space:nowrap;font-weight:700}
+.spoil td{color:var(--ink-2)}
+.final{margin-top:18px;background:var(--surface-2);padding:18px}
+.final .big{font-family:var(--display);font-weight:700;font-size:26px;color:var(--stamp)}
+/* book */
+.book{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);margin-top:22px}
+.book div{background:var(--surface);padding:14px 16px}
+.book dt{font-size:12px;color:var(--ink-3);font-weight:500}
+.book dd{margin:4px 0 0;font-size:15px;font-weight:500}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--ink);font-size:12.5px;color:var(--ink-3);line-height:1.8}
+.stampmark{display:inline-block;border:1.5px solid var(--stamp);color:var(--stamp);font-size:11px;font-weight:700;letter-spacing:.1em;padding:4px 10px;margin-top:12px;transform:rotate(-1.5deg)}
+::selection{background:var(--stamp);color:var(--on-ink)}
+</style>
+
+</head>
+<body>
+<div class="sheet">
+
+<header class="mast">
+  <div class="topline"><span><b>장편소설</b> 기획 소개</span><span><b>상태</b> 초고 완성 · 완성본 249면</span><span><b>갱신</b> 2026년 10월 3일</span></div>
+  <h1>어디서 개가<br>짖는구나</h1>
+  <div class="kind">회사 이야기 · 블랙코미디 · 휴먼드라마 · 12부</div>
+  <p class="oneline">회사에서 아랫사람이 바른말을 하면, 윗사람 귀에는 정말로 개 짖는 소리로 들린다. 그 한 가지 설정으로 대기업, 하청 공장, 야간 물류창고를 꿰뚫는 이야기.</p>
+  <div class="facts"><span>25~45세 직장인 독자</span><span>세 주인공의 이야기가 번갈아 진행</span><span>드라마 12회로 옮기기 좋은 구성</span></div>
+</header>
+
+<section>
+  <p class="q">이 소설의 단 하나의 설정</p>
+  <h2>바른말이 개 짖는 소리로 들린다</h2>
+  <p class="lead">회의실에서 누군가 이렇게 말한다고 해 봅시다. 말한 사람은 분명히 말했습니다. 그런데 듣는 사람의 귀에는 이렇게 들립니다.</p>
+  <div class="demo">
+    <div><div class="who">현장 반장이 사장에게 한 말</div><div class="said">"납기 닷새 줄이면<br>사람이 다칩니다."</div></div>
+    <div><div class="who">사장의 귀에 들린 소리</div><div class="heard">컹, 컹.</div></div>
+    <div class="after">사장은 창밖을 보며 말합니다. <strong>"…어디서 개가 짖어."</strong> 회의록에도 반장의 말은 남지 않습니다. 글자는 파일에 있는데, 아무도 그 줄을 읽지 못합니다.</div>
+  </div>
+  <ul class="points">
+    <li><b>듣는 쪽만 그렇게 듣습니다.</b> 말한 사람은 전달됐다고 믿어서, 같은 회의를 두 사람이 정반대로 기억합니다.</li>
+    <li><b>윗사람도 예외가 아닙니다.</b> 아랫사람 말을 개 소리로 넘긴 사람은, 자기보다 높은 사람 앞에서 자기 말이 똑같이 개 소리가 됩니다.</li>
+    <li><b>풀리는 방법은 하나뿐입니다.</b> 상대의 <span class="hl">이름을 불러 주면</span> 그 순간만 말이 들립니다. 다음 날이면 다시 안 들립니다.</li>
+    <li>왜 이런 일이 생기는지는 끝까지 설명하지 않습니다.</li>
+  </ul>
+</section>
+
+<section>
+  <p class="q">누구의 이야기인가</p>
+  <h2>서로 모르는 세 사람</h2>
+  <p class="lead">세 사람은 끝까지 서로 만나지 않습니다. 그런데 같은 서류 한 장 때문에 세 사람의 삶이 차례로 흔들립니다.</p>
+  <div class="heroes">
+    <div class="hero" style="--tc:var(--t1)"><div class="role">대기업 대리 · 33세</div><div class="nm">김민지</div><div class="where">묵산그룹 본사 15층 · 금요일 저녁부터 월요일 아침까지</div><div class="story">퇴근 20분 전 "보고서 전면 수정" 지시를 받고 주말 내내 갇힌다. 그사이 회사를 고발하는 익명 글이 터지고, 범인 찾기가 시작된다. 그녀는 회의록에서 사라진 말을 되살리는 작은 프로그램을 만든 사람이다.</div><div class="line">"이거 전에도 봤는데."</div></div>
+    <div class="hero" style="--tc:var(--t2)"><div class="role">하청 공장 사무직 · 28세</div><div class="nm">윤소라</div><div class="where">경기 화성 율목정밀 · 직원 9명 · 3월 말부터 한 달</div><div class="story">경리, 총무, 품질 서류, 납품 관리, 사장 심부름까지 혼자 한다. 어느 날 본사에서 "단가 8% 인하" 공문이 팩스로 온다. 거절할 수 없는 그 숫자가 공장의 밤을 바꾼다.</div><div class="line">"네, 그렇습니다."</div></div>
+    <div class="hero" style="--tc:var(--t3)"><div class="role">취업준비생 · 25세</div><div class="nm">남해인</div><div class="where">야간 물류창고 · 조끼 번호 14번 · 6월부터 7주</div><div class="story">낮에는 자기소개서를 쓰고 밤에는 상자를 나른다. 창고에서는 이름 대신 번호로 불린다. 낮에 지원한 회사가 바로 김민지의 회사다.</div><div class="line">"저기, 이름이 뭐예요?"</div></div>
+  </div>
+</section>
+
+<section>
+  <p class="q">세 이야기는 어떻게 이어지나</p>
+  <h2>숫자 하나가 위에서 아래로 내려간다</h2>
+  <p class="lead">높은 사람이 회의에서 "8로 해"라고 말한 숫자 하나가, 층을 하나씩 내려가며 결국 누군가의 몸에 닿습니다.</p>
+  <div class="fall">
+    <div class="step" style="--tc:var(--stamp)"><div class="at">본사 22층<small>2월 26일</small></div><div class="what"><div class="big">"7.6? 8로 해. 깔끔하게."</div><div class="sm">부사장이 계산값 7.6%를 8%로 올린다. 아무도 반대하지 않았으니 "전원 합의"로 적힌다.</div></div></div>
+    <div class="arrow">다음 날 오후, "보고서 전면 수정"</div>
+    <div class="step" style="--tc:var(--t1)"><div class="at">본사 15층<small>김민지 · 2월 말</small></div><div class="what"><div class="big">보고서 한 줄: "협력사 단가 8% 인하, 납기 5일 단축"</div><div class="sm">주말 내내 만든 240쪽 중 한 줄. 위험 요소 칸에는 "해당 없음".</div></div></div>
+    <div class="arrow">3주 뒤, A4 한 장짜리 공문이 팩스로</div>
+    <div class="step" style="--tc:var(--t2)"><div class="at">화성 공장<small>윤소라 · 3~4월</small></div><div class="what"><div class="big">8%를 맞추려고 밤에도 기계를 돌린다</div><div class="sm">정직하게 원가를 써냈더니 9%로 더 깎인다. 결국 외국인 직원의 손가락이 다치고, 서류에는 "인적 피해 없음".</div></div></div>
+    <div class="arrow">물량을 대려고 가장 싼 야간 물류 업체와 계약</div>
+    <div class="step" style="--tc:var(--t3)"><div class="at">물류창고<small>남해인 · 6~8월</small></div><div class="what"><div class="big">"이름 외우지 마세요. 다음 주에 다 바뀌어요."</div><div class="sm">그 계약이 만든 야간 일자리. 옆 사람이 쓰러져도 아무도 그의 이름을 모른다.</div></div></div>
+  </div>
+</section>
+
+<section>
+  <p class="q">언제, 어디서</p>
+  <h2>2026년 2월부터 8월까지</h2>
+  <p class="lead">책은 세 사람의 장면을 번갈아 보여 줍니다. 시간대는 다르지만 한 부 안에 세 이야기가 함께 나옵니다.</p>
+  <div class="tl" role="img" aria-label="2월부터 8월까지 세 주인공의 이야기가 놓인 기간">
+    <div class="tl-axis"><span style="left:0">2월</span><span style="left:13.21%">3월</span><span style="left:27.83%">4월</span><span style="left:41.98%">5월</span><span style="left:56.60%">6월</span><span style="left:70.75%">7월</span><span style="left:85.38%">8월</span></div>
+    <div class="tl-row" style="--tc:var(--t1)"><div class="lab">김민지<small>주말 62시간</small></div><div class="tl-track"><div class="tl-bar" style="left:12.26%;width:1.89%"></div><div class="tl-mark" style="left:89.62%"><i>8월 10일</i></div></div></div>
+    <div class="tl-row" style="--tc:var(--t2)"><div class="lab">윤소라<small>한 달</small></div><div class="tl-track"><div class="tl-bar" style="left:23.58%;width:14.15%"></div><div class="tl-mark" style="left:37.74%"><i>4월 22일</i></div><div class="tl-mark" style="left:89.62%"></div></div></div>
+    <div class="tl-row" style="--tc:var(--t3)"><div class="lab">남해인<small>7주</small></div><div class="tl-track"><div class="tl-bar" style="left:66.51%;width:23.11%"></div><div class="tl-mark" style="left:89.62%"></div></div></div>
+    <p class="tl-note"><strong style="color:var(--stamp)">4월 22일 오전</strong> 세 사람이 본사 1층 카페에 함께 있었지만 서로 몰랐다. <strong style="color:var(--stamp)">8월 10일</strong> 세 이야기가 같은 날 끝난다.</p>
+  </div>
+</section>
+
+<section>
+  <p class="q">누가 나오나</p>
+  <h2>나쁜 사람들, 그리고 그 사이의 사람들</h2>
+  <p class="lead">이 소설에는 분명한 악역이 다섯 명 있습니다. 하지만 그들도 더 높은 사람 앞에서는 고개를 숙입니다. 그리고 그 사이에는 피해자이면서 가해자이기도 한 평범한 사람들이 있습니다.</p>
+  <h3>악역 다섯</h3>
+  <div class="ppl">
+    <div class="p bad"><div><span class="n">함도진</span><span class="r">부사장</span></div><div class="d">숫자를 정하는 사람. 회의에서 욕을 하고, 반대하는 사람에게 "어디서 개가 짖나"라고 한다.</div></div>
+    <div class="p bad"><div><span class="n">선우담</span><span class="r">본부장 · 회장의 아들</span></div><div class="d">늘 웃으며 "상생 경영"을 말한다. 뒤에서는 부사장의 녹음 파일을 쥐고 때를 기다린다.</div></div>
+    <div class="p bad"><div><span class="n">탁용민</span><span class="r">인사보안팀장</span></div><div class="d">고발글을 쓴 사람의 문체까지 분석해 놓고, 정작 아무 기록도 없는 파견직에게 누명을 씌운다.</div></div>
+    <div class="p bad"><div><span class="n">나성필</span><span class="r">본사 구매팀장</span></div><div class="d">하청 공장에 단가 인하 공문을 보내는 사람. 공문에는 그의 전화번호가 없다.</div></div>
+    <div class="p bad"><div><span class="n">오세웅</span><span class="r">인력업체 현장 실장</span></div><div class="d">창고 일꾼들을 번호로 부른다. "이름 외우지 마세요."</div></div>
+  </div>
+  <h3>그 사이의 사람들</h3>
+  <div class="ppl">
+    <div class="p"><div><span class="n">최정남</span><span class="r">김민지의 부장</span></div><div class="d">아랫사람을 다그치지만, 딱 한 번 윗선에 바른말을 했다가 "개 짖는 소리" 취급을 받은 적이 있다.</div></div>
+    <div class="p"><div><span class="n">박종두</span><span class="r">김민지의 과장</span></div><div class="d">회의에서 열한 번 반대했는데 한 번도 기록되지 않았다. 육아휴직을 썼다가 승진에서 밀렸다.</div></div>
+    <div class="p"><div><span class="n">구본철</span><span class="r">윤소라의 사장</span></div><div class="d">직원에게는 큰소리치고, 본사 앞에서는 "네, 그렇습니다"만 반복한다.</div></div>
+    <div class="p"><div><span class="n">정수경</span><span class="r">파견직 사무원</span></div><div class="d">사내 메신저 계정조차 없는 사람. 기록이 없다는 이유로 가장 먼저 쫓겨난다.</div></div>
+  </div>
+</section>
+
+<section>
+  <p class="q">어떤 이야기인가</p>
+  <h2>줄거리, 세 단계로</h2>
+  <div class="acts">
+    <div class="act"><div class="no">시작 · 1~4부</div><div class="tt">갇히고, 터진다</div><div class="tx">금요일 퇴근 직전 보고서를 처음부터 다시 쓰라는 지시가 떨어진다. 같은 주말 회사 익명 게시판에 폭로 글이 올라오고, 부사장은 "월요일 아침까지 범인을 찾아라"라고 한다. 하청 공장에는 단가 인하 공문이 도착한다.</div></div>
+    <div class="act"><div class="no">전개 · 5~9부</div><div class="tt">지워진 말이 돌아온다</div><div class="tx">김민지의 프로그램이 회의록에서 사라진 문장들을 되살린다. 모두가 반대했고, 모두의 말이 지워져 있었다. 공장은 밤마다 기계를 돌리고, 창고에서는 남해인이 면접에 떨어지며 "현실감 부족"이라는 평가를 우연히 본다.</div></div>
+    <div class="act"><div class="no">결말 · 10~12부</div><div class="tt">누가 치워지고, 누가 남나</div><div class="tx">창고에서 한 사람이 쓰러지지만 아무도 그의 이름을 모른다. 회사는 가장 힘없는 사람에게 책임을 돌려 사건을 덮는다. 다섯 달 뒤, 숨겨져 있던 녹음 파일이 터진다.</div></div>
+  </div>
+</section>
+
+<section>
+  <p class="q">차례</p>
+  <h2>12부, 한 줄씩</h2>
+  <p class="lead">각 부의 제목은 그 부에서 가장 아프게 남는 한마디입니다.</p>
+  <ol class="toc">
+    <li><span class="no">1부</span><div><div class="tt">랜선 뽑아</div><div class="tx">금요일 저녁 "전면 수정" 지시. 야근 기록이 남지 않게 인터넷 선을 뽑으라는 부장.</div></div></li>
+    <li><span class="no">2부</span><div><div class="tt">이거 전에도 봤는데</div><div class="tx">회의록에서 한 줄이 비어 있다. 공장에는 공문이, 창고에는 첫 출근이.</div></div></li>
+    <li><span class="no">3부</span><div><div class="tt">상무님 지금 회의 중이십니다</div><div class="tx">상사 가족의 전화를 대신 막는 거짓말. 같은 회의를 정반대로 기억하는 두 사람.</div></div></li>
+    <li><span class="no">4부</span><div><div class="tt">월요일 여덟 시까지 범인</div><div class="tx">익명 폭로 글이 퍼진다. 공장에서는 반장의 경고가 "개 짖는 소리"가 된다.</div></div></li>
+    <li><span class="no">5부</span><div><div class="tt">직원 9명, 급여대장 10명</div><div class="tx">출근하지 않는 사장 부인이 직원으로 올라 있다. 문체로 사람을 찾는 보안팀장 등장.</div></div></li>
+    <li><span class="no">6부</span><div><div class="tt">물 좀 주세요</div><div class="tx">창고에서 물을 달라는 말에 돌아온 대답. 그 말을 넉 달 전 본사 건물에서도 들었다.</div></div></li>
+    <li><span class="no">7부</span><div><div class="tt">정확해서 1% 더 깎였다</div><div class="tx">정직하게 쓴 원가 자료가 더 깎을 근거가 된다. 지워진 문장들이 되살아나기 시작한다.</div></div></li>
+    <li class="key"><span class="no">8부</span><div><div class="tt">어디서 개가 짖나</div><div class="tx">부사장 회의의 원본이 드러난다. 1부에서 모두가 웃었던 농담이 어디서 왔는지 알게 된다.</div></div></li>
+    <li><span class="no">9부</span><div><div class="tt">현실감 부족</div><div class="tx">면접 탈락 메일에 잘못 붙어 온 한 줄의 평가. 그날 밤 창고에서 한 사람이 쓰러진다.</div></div></li>
+    <li><span class="no">10부</span><div><div class="tt">이름 외우지 마세요</div><div class="tx">쓰러진 사람의 이름을 아는 사람이 없다. 그리고 처음으로, 누군가 옆 사람의 이름을 묻는다.</div></div></li>
+    <li><span class="no">11부</span><div><div class="tt">짖은 개를 치우는 게 중요하지</div><div class="tx">회사가 범인을 정하는 방식. 공장에서는 사고를 숨기고 감사패를 받는다.</div></div></li>
+    <li class="key"><span class="no">12부</span><div><div class="tt">어디서 개가 짖는구나</div><div class="tx">녹음 파일이 터진 밤. 책 제목이 된 그 한마디가 마침내 나온다.</div></div></li>
+  </ol>
+</section>
+
+<section>
+  <p class="q">제목의 뜻</p>
+  <h2>「짖나」와 「짖는구나」는 다르다</h2>
+  <div class="pair">
+    <div><div class="w">어디서 개가 짖<em>나</em></div><div class="x">남의 말을 소음 취급하며 무시할 때 쓰는 말. 회사에서 실제로 쓰이는 말이다. 1부에서는 농담처럼 등장한다.</div></div>
+    <div><div class="w">어디서 개가 짖<em>는구나</em></div><div class="x">"-구나"는 모르던 것을 지금 막 깨달았을 때 쓰는 말이다. 책의 마지막에 이 말을 하는 사람은 큰 착각을 하고 있다.</div></div>
+  </div>
+  <p>같은 문장이 책 속에서 여섯 번, 다른 사람의 입으로 나옵니다. 처음에는 웃음을 주다가, 점점 아래로 번지고, 마지막에는 그 말을 시작한 사람에게 되돌아갑니다.</p>
+  <div class="track5">
+    <div><div class="bu">1부</div><div class="wh">농담</div><div class="ho">부장이 흉내 내자 다 같이 웃는다</div></div>
+    <div><div class="bu">4 · 6부</div><div class="wh">번진다</div><div class="ho">공장 사장, 창고 실장도 똑같이 말한다</div></div>
+    <div class="hot"><div class="bu">8부</div><div class="wh">처음 나온 곳</div><div class="ho">부사장이 부장에게 한 말이었다</div></div>
+    <div><div class="bu">11부</div><div class="wh">무기</div><div class="ho">"짖은 개를 치우는 게 중요하지"</div></div>
+    <div class="hot" style="grid-column:span 2"><div class="bu">12부</div><div class="wh">되돌아온다</div><div class="ho">그 말을 시작한 사람이 자기 목소리를 듣고</div></div>
+  </div>
+</section>
+
+<section>
+  <p class="q">어떻게 끝나나</p>
+  <h2>해결되지 않는다. 그래도 한 가지는 남는다</h2>
+  <p class="lead">나쁜 사람들은 대부분 벌을 받지 않습니다. 회사도, 공장도, 창고도 그대로입니다. 그런데 마지막 날 밤, 두 사람이 각자의 자리에서 누군가의 이름을 부릅니다.</p>
+  <details>
+    <summary>결말과 반전 보기 <span>스포일러</span></summary>
+    <div class="spoil">
+      <table>
+        <tr><th>폭로 글을 쓴 사람</th><td>김민지의 프로그램이 되살린 회의록을, 막내 사원 이강토가 지친 새벽에 올렸다. 김민지는 그 사실을 알고도 침묵한다.</td></tr>
+        <tr><th>누명을 쓴 사람</th><td>회사 서버에 아무 기록도 없는 파견직 정수경. 결백을 증명할 기록도 없었다. 그녀는 돌아오지 않는다.</td></tr>
+        <tr><th>부사장</th><td>녹음 파일이 터진 날 아침, 계열사 사장으로 승진한다. 축하 파티에서 휴대폰 스피커로 흘러나오는 자기 목소리를 듣고 말한다. "어디서 개가 짖는구나." 그는 그게 자기 목소리라는 걸 끝까지 모른다.</td></tr>
+        <tr><th>회장의 아들</th><td>녹음 파일을 터뜨려 경쟁자를 흔들고 한 자리 더 올라간다. 진실은 정의가 아니라 권력 싸움의 무기로 쓰였다.</td></tr>
+        <tr><th>보안팀장</th><td>다섯 달 전 자기가 쓴 방식 그대로 책임을 지고 잘린다.</td></tr>
+        <tr><th>공장과 창고</th><td>다음 분기에도 단가 인하 공문이 온다. 창고에는 다음 주에도 새 번호표가 나온다.</td></tr>
+      </table>
+      <div class="final">
+        <div class="label">마지막 장면</div>
+        <p style="margin-top:6px">창고의 남해인은 쓰러진 동료의 이름조차 몰랐던 일을 겪은 뒤, 옆 사람에게 처음으로 이름을 묻는다. "민석 씨." 그러자 그 사람의 말이 들린다. 본사의 김민지는 새로 온 파견직에게 그 말을 하려다 멈추고 이름을 묻는다. 그리고 쫓겨난 정수경에게 메일을 쓴다. 첫 줄은 이렇다.</p>
+        <div class="big" style="margin-top:10px">수경 씨.</div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section>
+  <p class="q">책 정보</p>
+  <h2>지금 어디까지 왔나</h2>
+  <dl class="book">
+    <div><dt>분량</dt><dd>12부 · 원고 약 10만 자</dd></div>
+    <div><dt>판형</dt><dd>신국판 · 249쪽</dd></div>
+    <div><dt>완료</dt><dd>초고 · 조판 · 작가의 말</dd></div>
+    <div><dt>남은 일</dt><dd>퇴고 · 표지 · 출간</dd></div>
+  </dl>
+  <p style="font-size:14px;color:var(--ink-3)">책 속 사건들은 많은 직장인이 익명으로 남긴 이야기에서 모양만 빌려 왔습니다. 실제 회사나 인물과는 관계가 없습니다.</p>
+</section>
+
+<footer>
+  <div>어디서 개가 짖는구나 · 12부 장편소설 기획 소개 · 2026년 10월</div>
+  <div class="stampmark">초고 완성</div>
+</footer>
+</div>
+
+</body>
+</html>
