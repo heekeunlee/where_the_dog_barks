@@ -29,7 +29,7 @@ body{background:var(--paper);color:var(--ink);font-family:var(--body);font-weigh
 .mast{padding-block:40px 0}
 .topline{display:flex;flex-wrap:wrap;gap:4px 18px;padding-bottom:14px;border-bottom:1px solid var(--ink);font-size:12px;color:var(--ink-3)}
 .topline b{color:var(--ink-2);font-weight:500}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,9vw,66px);line-height:1.1;margin:26px 0 0;text-wrap:balance}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(24px,6.4vw,40px);line-height:1.25;margin:24px 0 0;white-space:nowrap;letter-spacing:-.01em}
 .kind{margin-top:12px;font-size:14px;color:var(--ink-3)}
 .oneline{font-family:var(--display);font-weight:500;font-size:clamp(18px,3.4vw,22px);line-height:1.7;margin:24px 0 0;padding-left:18px;border-left:3px solid var(--stamp);max-width:34em}
 .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
@@ -155,24 +155,31 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--ink);font-siz
 <div class="sheet">
 
 <header class="mast">
-  <div class="topline"><span><b>장편소설</b> 기획 소개</span><span><b>상태</b> 초고 완성 · 완성본 269면</span><span><b>갱신</b> 2026년 10월 3일</span></div>
-  <h1>어디서 개가<br>짖는구나</h1>
+  <div class="topline"><span><b>장편소설</b> 기획 소개</span><span><b>상태</b> 초고 완성 · 완성본 269면</span><span><b>갱신</b> 2026년 10월 4일</span></div>
+  <h1>어디서 개가 짖는구나</h1>
   <div class="kind">회사 이야기 · 블랙코미디 · 휴먼드라마 · 12부</div>
-  <p class="oneline">회사에서 아랫사람이 바른말을 하면, 윗사람 귀에는 정말로 개 짖는 소리로 들린다. 그 한 가지 설정으로 대기업, 하청 공장, 야간 물류창고를 꿰뚫는 이야기.</p>
+  <p class="oneline">회사에서 아랫사람이 바른말을 하면 윗사람 귀에는 정말로 개 짖는 소리로 들린다. 거꾸로, 윗사람의 지시와 훈계도 아랫사람 귀에는 개 짖는 소리처럼 흘러간다. 그 한 가지 설정으로 대기업, 하청 공장, 야간 물류창고를 꿰뚫는 이야기.</p>
   <div class="facts"><span>25~45세 직장인 독자</span><span>세 주인공의 이야기가 번갈아 진행</span><span>드라마 12회로 옮기기 좋은 구성</span></div>
 </header>
 
 <section>
   <p class="q">이 소설의 단 하나의 설정</p>
-  <h2>바른말이 개 짖는 소리로 들린다</h2>
+  <h2>서로의 말이 개 짖는 소리로 들린다</h2>
   <p class="lead">회의실에서 누군가 이렇게 말한다고 해 봅시다. 말한 사람은 분명히 말했습니다. 그런데 듣는 사람의 귀에는 이렇게 들립니다.</p>
   <div class="demo">
     <div><div class="who">현장 반장이 사장에게 한 말</div><div class="said">"납기 닷새 줄이면<br>사람이 다칩니다."</div></div>
     <div><div class="who">사장의 귀에 들린 소리</div><div class="heard">컹, 컹.</div></div>
     <div class="after">사장은 창밖을 보며 말합니다. <strong>"…어디서 개가 짖어."</strong> 회의록에도 반장의 말은 남지 않습니다. 글자는 파일에 있는데, 아무도 그 줄을 읽지 못합니다.</div>
   </div>
+  <p class="lead">반대 방향도 있습니다. 위에서 내려오는 말을 끝까지 듣지 않게 된 아랫사람 귀에는, 윗사람의 말이 그렇게 들립니다.</p>
+  <div class="demo">
+    <div><div class="who">상무가 회의에서 한 말</div><div class="said">"이따위 보고로<br>뭘 결정하란 말입니까."</div></div>
+    <div><div class="who">막내 사원의 귀에 들린 소리</div><div class="heard">컹, 컹.</div></div>
+    <div class="after">회의가 끝나고 사원이 묻습니다. <strong>"대리님은 그런 적 없어요?"</strong> 대리는 잠깐 생각하다 대답합니다. "나도 그럴 때 있어. 위에서 내려오는 말이 그렇게 들릴 때." 서로가 서로를 짖는 소리로 듣는 사무실. 누가 짖었는지는 듣는 쪽이 정합니다.</div>
+  </div>
   <ul class="points">
     <li><b>듣는 쪽만 그렇게 듣습니다.</b> 말한 사람은 전달됐다고 믿어서, 같은 회의를 두 사람이 정반대로 기억합니다.</li>
+    <li><b>위아래 어느 쪽에서도 일어납니다.</b> 아래의 바른말은 위에서, 위의 지시와 훈계는 아래에서 개 짖는 소리가 됩니다. 들을 마음이 닫힌 쪽 귀에서 소리가 바뀝니다.</li>
     <li><b>윗사람도 예외가 아닙니다.</b> 아랫사람 말을 개 소리로 넘긴 사람은, 자기보다 높은 사람 앞에서 자기 말이 똑같이 개 소리가 됩니다.</li>
     <li><b>풀리는 방법은 하나뿐입니다.</b> 상대의 <span class="hl">이름을 불러 주면</span> 그 순간만 말이 들립니다. 다음 날이면 다시 안 들립니다.</li>
     <li>왜 이런 일이 생기는지는 끝까지 설명하지 않습니다.</li>
@@ -314,7 +321,7 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--ink);font-siz
   <p class="q">책 정보</p>
   <h2>지금 어디까지 왔나</h2>
   <dl class="book">
-    <div><dt>분량</dt><dd>12부 · 원고 약 10만 자</dd></div>
+    <div><dt>분량</dt><dd>12부 · 원고 약 11만 자</dd></div>
     <div><dt>판형</dt><dd>신국판 · 269쪽</dd></div>
     <div><dt>완료</dt><dd>초고 · 조판 · 작가의 말</dd></div>
     <div><dt>남은 일</dt><dd>퇴고 · 표지 · 출간</dd></div>
