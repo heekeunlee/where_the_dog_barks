@@ -6,7 +6,7 @@
 - 소개 페이지: https://heekeunlee.github.io/where_the_dog_barks/review.html
 - 평가 기준과 보고서 양식: [평가기준.md](평가기준.md)
 - 평가자 정의(Claude Code 서브에이전트 형식): [agents/](agents/)
-- 결과: [결과/](결과/)
+- 결과: [결과/](결과/) — 2026-10-04 1차 평가 완료, 종합 6.75/10, 전원 "수정 후 출간" ([종합.md](결과/종합.md))
 
 ## 구성 (10인)
 
