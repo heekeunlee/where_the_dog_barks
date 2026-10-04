@@ -173,13 +173,38 @@ table.score tr.avg td{border-top:2px solid var(--ink);font-weight:700}
 .quotes cite{display:block;font-style:normal;font-size:12px;color:var(--tc);margin-top:6px;font-weight:500}
 table.heat td[style]{background:color-mix(in srgb,var(--t1) calc(var(--h)*38%),var(--surface))}
 table.heat td.hi[style]{background:color-mix(in srgb,var(--stamp) 22%,var(--surface))}
+
+.cmps{display:grid;gap:9px;margin-top:14px;max-width:640px}
+.cmp{display:grid;grid-template-columns:96px 1fr 120px;gap:10px;align-items:center;font-size:14px}
+.cmp .cl{text-align:right;color:var(--ink-2)}
+.cmp .ct{position:relative;height:16px;background:var(--surface-2)}
+.cmp.ax .ct{background:none;height:14px}
+.cmp .tk{position:absolute;font-style:normal;font-size:11px;color:var(--ink-3);transform:translateX(-50%)}
+.cmp .seg{position:absolute;top:7px;height:2px;background:var(--stamp)}
+.cmp .d1,.cmp .d2{position:absolute;top:3px;width:10px;height:10px;border-radius:50%;transform:translateX(-50%)}
+.cmp .d1{background:var(--surface);border:2px solid var(--ink-3);box-sizing:border-box}
+.cmp .d2{background:var(--stamp)}
+.cmp.eq .d2{background:var(--t1)}
+.cmp .cv{font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.cmp .cv b{color:var(--ink)}.cmp .cv em{font-style:normal;color:var(--stamp);font-weight:700;font-size:12.5px}
+.lg1,.lg2{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 3px 0 8px;vertical-align:middle}
+.lg1{border:2px solid var(--ink-3)}.lg2{background:var(--stamp)}
+@media (max-width:520px){.cmp{grid-template-columns:70px 1fr 92px;font-size:12.5px}}
+table.iss td{vertical-align:middle}
+.pip{display:inline-flex;gap:2px;vertical-align:middle}.pip i{width:7px;height:10px;background:var(--ink-3)}.pip.p2 i{background:var(--stamp)}
+.st{font-size:12px;font-weight:700;padding:2px 8px;border:1px solid;white-space:nowrap}
+.st.ok{color:var(--t1);border-color:var(--t1);background:var(--t1-wash)}
+.st.mid{color:var(--t2);border-color:var(--t2);background:var(--t2-wash)}
+.st.no{color:var(--stamp);border-color:var(--stamp);background:var(--stamp-wash)}
+td.upc{color:var(--stamp);font-weight:700}
+td.q2{font-size:13px;color:var(--ink-2);font-family:var(--display);font-weight:600}
 </style>
 </head>
 <body>
 <div class="sheet">
 
 <header class="mast">
-  <div class="topline"><span><b>평가 설정</b> 가상 평가단 10인</span><span><b>상태</b> 평가 완료 · 10명 전원</span><span><b>갱신</b> 2026년 10월 4일</span></div>
+  <div class="topline"><span><b>평가 설정</b> 가상 평가단 10인</span><span><b>상태</b> 2차 평가 완료</span><span><b>갱신</b> 2026년 10월 4일</span></div>
   <h1>가상 평가단</h1>
   <div class="kind">《어디서 개가 짖는구나》를 열 명이 따로 읽고 평가합니다</div>
   <p class="oneline">평론가 넷, 일반 독자 셋, 작가 셋. 서로의 평가를 보지 않고, 원고만 읽고, 모든 점수에 근거를 답니다.</p>
@@ -188,7 +213,7 @@ table.heat td.hi[style]{background:color-mix(in srgb,var(--stamp) 22%,var(--surf
     <div style="--tc:var(--t2)"><b>3</b><span>일반 독자</span></div>
     <div style="--tc:var(--t3)"><b>3</b><span>작가</span></div>
   </div>
-  <a class="back" href="#result">결과 바로 보기 ↓</a> &nbsp; <a class="back" href="./">← 작품 소개로 돌아가기</a>
+  <a class="back" href="#round2">2차 결과 ↓</a> &nbsp; <a class="back" href="#result">1차 결과 ↓</a> &nbsp; <a class="back" href="./">← 작품 소개로 돌아가기</a>
 </header>
 
 <section>
@@ -198,8 +223,38 @@ table.heat td.hi[style]{background:color-mix(in srgb,var(--stamp) 22%,var(--surf
   <p class="note">평가자는 모두 지어낸 인물이며, 실제로는 각자 다른 역할을 맡은 AI 서브에이전트(독립적으로 일하는 보조 AI)가 읽고 씁니다. 실존 인물과는 관계가 없습니다.</p>
 </section>
 
+<section id="round2">
+  <p class="q">2차 평가 · 수정 후</p>
+  <h2>무엇이 달라졌나</h2>
+  <p class="lead">1차 의견을 반영해 고친 원고를 같은 열 명이 같은 기준으로 다시 읽었다. 평가자들은 1차 결과와 수정 사실을 보지 않았다.</p>
+  <div class="kpi">
+    <div><span class="kl">종합 평균</span><b>6.75 → 7.0</b><span class="ks">6점대 평가자 3명 → 0명</span></div>
+    <div><span class="kl">가장 많이 오른 항목</span><b>문장·대사 +0.6</b><span class="ks">6.1 → 6.7</span></div>
+    <div><span class="kl">사라진 1차 약점</span><b>3개</b><span class="ks">석 달 · 정음 만능 · 화자 표기</span></div>
+  </div>
+
+  <h3 style="--tc:var(--ink)">항목별 1차 → 2차 <small><i class="lg1"></i>1차 <i class="lg2"></i>2차</small></h3>
+  <div class="cmps"><div class="cmp ax"><span></span><span class="ct"><i class="tk" style="left:0%">5</i><i class="tk" style="left:25%">6</i><i class="tk" style="left:50%">7</i><i class="tk" style="left:75%">8</i><i class="tk" style="left:100%">9</i></span><span></span></div><div class="cmp eq"><span class="cl">몰입·가독성</span><span class="ct"><i class="seg" style="left:47.5%;width:0.0%"></i><i class="d1" style="left:47.5%"></i><i class="d2" style="left:47.5%"></i></span><span class="cv">6.9 → <b>6.9</b></span></div><div class="cmp up"><span class="cl">인물</span><span class="ct"><i class="seg" style="left:40.0%;width:7.5%"></i><i class="d1" style="left:40.0%"></i><i class="d2" style="left:47.5%"></i></span><span class="cv">6.6 → <b>6.9</b> <em>+0.3</em></span></div><div class="cmp eq"><span class="cl">구성</span><span class="ct"><i class="seg" style="left:47.5%;width:0.0%"></i><i class="d1" style="left:47.5%"></i><i class="d2" style="left:47.5%"></i></span><span class="cv">6.9 → <b>6.9</b></span></div><div class="cmp up"><span class="cl">문장·대사</span><span class="ct"><i class="seg" style="left:27.5%;width:15.0%"></i><i class="d1" style="left:27.5%"></i><i class="d2" style="left:42.5%"></i></span><span class="cv">6.1 → <b>6.7</b> <em>+0.6</em></span></div><div class="cmp up"><span class="cl">주제</span><span class="ct"><i class="seg" style="left:60.0%;width:5.0%"></i><i class="d1" style="left:60.0%"></i><i class="d2" style="left:65.0%"></i></span><span class="cv">7.4 → <b>7.6</b> <em>+0.2</em></span></div><div class="cmp up"><span class="cl">현실성</span><span class="ct"><i class="seg" style="left:20.0%;width:5.0%"></i><i class="d1" style="left:20.0%"></i><i class="d2" style="left:25.0%"></i></span><span class="cv">5.8 → <b>6.0</b> <em>+0.2</em></span></div><div class="cmp eq"><span class="cl">독창성</span><span class="ct"><i class="seg" style="left:50.0%;width:0.0%"></i><i class="d1" style="left:50.0%"></i><i class="d2" style="left:50.0%"></i></span><span class="cv">7.0 → <b>7.0</b></span></div><div class="cmp up"><span class="cl">여운</span><span class="ct"><i class="seg" style="left:52.5%;width:2.5%"></i><i class="d1" style="left:52.5%"></i><i class="d2" style="left:55.0%"></i></span><span class="cv">7.1 → <b>7.2</b> <em>+0.1</em></span></div></div>
+
+  <h3 style="--tc:var(--ink)">1차 약점은 사라졌나 <small>'약점 3'에 적은 평가자 수</small></h3>
+  <div class="tbl"><table class="iss"><thead><tr><th>1차 약점</th><th class="c">1차</th><th class="c">2차</th><th>판단</th></tr></thead><tbody><tr><td>10부 "석 달"</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span> 8</td><td class="c"><span class="pip p2"></span> 0</td><td><span class="st ok">해결</span></td></tr><tr><td>정음이 만능 열쇠</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i><i></i></span> 6</td><td class="c"><span class="pip p2"></span> 0</td><td><span class="st ok">해결</span></td></tr><tr><td>대사 화자 표기 꼬임</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i></span> 5</td><td class="c"><span class="pip p2"></span> 0</td><td><span class="st ok">해결</span></td></tr><tr><td>장면 끝 해설 문장</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span> 7</td><td class="c"><span class="pip p2"><i></i><i></i><i></i><i></i><i></i></span> 5</td><td><span class="st mid">줄었지만 남음</span></td></tr><tr><td>같은 표현·문형 반복</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span> 8</td><td class="c"><span class="pip p2"><i></i><i></i><i></i><i></i><i></i><i></i></span> 6</td><td><span class="st mid">줄었지만 남음</span></td></tr><tr><td>우연에 기댄 연결</td><td class="c"><span class="pip"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span> 7</td><td class="c"><span class="pip p2"><i></i><i></i><i></i><i></i><i></i><i></i></span> 6</td><td><span class="st no">그대로</span></td></tr></tbody></table></div>
+  <p class="note">'우연에 기댄 연결'은 10부 반송 경위서를 뺐는데도 남았다. 편의점, 율목 박스, 반송 성적서, 면접관 선우담, 지현까지 남해인 줄기의 연결이 "다섯 겹의 우연"으로 읽힌다.</p>
+
+  <h3 style="--tc:var(--stamp)">2차에서 새로 두드러진 것</h3>
+  <ol class="fixes">
+    <li><div class="fh"><span class="fn">1</span><b>연속성 오류</b><em>8명</em></div><div class="fx">박종두가 이강토를 "처음" 이름으로 부름(10부) ↔ 4부 "강토야", 민석이 합류 전 대화를 들음(10부), 같은 부의 "다섯 글자"/"일곱 글자"(12부), 랜선을 뽑은 뒤의 파일 업로드(3부), 기획서 적용 시점(11부) 등. 평가자들이 적은 오류 약 260건을 묶으면 80건, 원고와 대조해 <b>확인된 오류는 41건</b>(그중 27건은 3명 이상이 짚음)이다. 목록은 <a href="https://github.com/heekeunlee/where_the_dog_barks/blob/main/%ED%8F%89%EA%B0%80%EB%8B%A8/%EA%B2%B0%EA%B3%BC/2%EC%B0%A8/%EC%98%A4%EB%A5%98_%EB%AA%A9%EB%A1%9D.md">오류 목록</a>에 정리했다.</div></li>
+    <li><div class="fh"><span class="fn">2</span><b>남해인 줄기가 사건을 바꾸지 않는다</b><em>2명</em></div><div class="fx">10부 성적서 장면이 "원래대로 넣었어요"로 끝나 다른 줄기로 아무것도 돌아가지 않는다.</div></li>
+    <li><div class="fh"><span class="fn">3</span><b>김민지와 윤소라의 목소리가 겹친다</b><em>1명</em></div><div class="fx">둘 다 세고, 둘 다 적는 것으로 저항한다.</div></li>
+  </ol>
+
+  <h3 style="--tc:var(--ink)">평가자별</h3>
+  <div class="tbl"><table class="score"><thead><tr><th class="c">#</th><th>평가자</th><th class="c">1차</th><th class="c">2차</th><th>2차 한 줄 평</th></tr></thead><tbody><tr><td class="c">01</td><td><b>한서진</b></td><td class="c">7</td><td class="c">7</td><td class="q2">문서가 증언하는 노동소설. 우연의 그물이 리얼리즘을 깎는다.</td></tr><tr><td class="c">02</td><td><b>오재현</b></td><td class="c">6</td><td class="c upc">7 ↑</td><td class="q2">시간 순서가 곧 위계 순서다. 설계는 빼어나지만 이음매가 보인다</td></tr><tr><td class="c">03</td><td><b>문유경</b></td><td class="c">6.5</td><td class="c upc">7 ↑</td><td class="q2">짖음을 문장 단위로 설계한 소설. 다만 설명이 메아리를 덮는다</td></tr><tr><td class="c">04</td><td><b>강도윤</b></td><td class="c">7</td><td class="c">7</td><td class="q2">짖음 하나로 사다리를 꿰었다. 반복만 덜면 팔린다</td></tr><tr><td class="c">05</td><td><b>박지수</b></td><td class="c">7</td><td class="c">7</td><td class="q2">내 메신저 알림음까지 들리는 책. 다만 같은 박자가 너무 자주 돌아온다.</td></tr><tr><td class="c">06</td><td><b>이영철</b></td><td class="c">7</td><td class="c">7</td><td class="q2">찔려서 덮었다가, 궁금해서 다시 폈다</td></tr><tr><td class="c">07</td><td><b>최하늘</b></td><td class="c">7</td><td class="c">7</td><td class="q2">웃기려고 집었다가 10부에서 폰 내려놓은 소설. 중반은 좀 처진다.</td></tr><tr><td class="c">08</td><td><b>정미래</b></td><td class="c">6</td><td class="c upc">7 ↑</td><td class="q2">듣지 못하는 귀를 정확히 그렸는데, 다 들린다고 서술자가 먼저 말해 버린다.</td></tr><tr><td class="c">09</td><td><b>윤태오</b></td><td class="c">7</td><td class="c">7</td><td class="q2">회차 엔딩은 잘 박았는데 회차를 잇는 실밥이 터져 있다</td></tr><tr><td class="c">10</td><td><b>서경호</b></td><td class="c">7</td><td class="c">7</td><td class="q2">명세서 산수까지 맞는 노동 소설, 정작 제 숫자는 자꾸 틀린다</td></tr></tbody></table></div>
+  <div class="limit"><b>읽는 법</b> 점수는 0.25점 올랐다. 같은 모델로 만든 평가단이라 점수 폭이 좁다. 그보다는 1차에 6~8명이 짚은 약점 셋이 2차에서 한 명에게도 나오지 않았다는 점이 수정이 통했다는 신호다.</div>
+  <p><a href="https://github.com/heekeunlee/where_the_dog_barks/tree/main/%ED%8F%89%EA%B0%80%EB%8B%A8/%EA%B2%B0%EA%B3%BC/2%EC%B0%A8">2차 보고서 10편과 종합 보기 →</a></p>
+</section>
+
 <section id="result">
-  <p class="q">결과</p>
+  <p class="q">1차 결과 · 수정 전</p>
   <h2>열 명 모두 "수정 후 출간"</h2>
   <div class="kpi">
     <div><span class="kl">종합 평균</span><b>6.75</b><span class="ks">10점 만점 · "좋다, 분명한 장점"</span></div>
