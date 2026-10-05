@@ -37,7 +37,7 @@ SRC = ROOT / "원고" / "12부"
 
 BACK_MD = ROOT / "원고" / "작가의_말.md"      # 뒷붙이. 본문 쪽번호를 이어 받는다
 
-SERIF = "/System/Library/Fonts/Supplemental/AppleMyungjo.ttf"
+SERIF = str(Path(__file__).resolve().parent / "fonts" / "KoPub Batang Light.ttf")   # 쪽번호·하시라
 
 FRONT_CSS = """
 @page { size: 152mm 225mm; margin: 20mm 16mm 18mm; }
@@ -277,6 +277,7 @@ def main() -> None:
     book.set_metadata({"title": TITLE, "subject": SUBTITLE, "author": ""})
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    book.subset_fonts()          # 쪽번호·하시라 서체도 쓰인 글자만 넣는다
     book.save(OUT, garbage=4, deflate=True)
     total = book.page_count
     book.close(); body.close()

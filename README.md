@@ -62,6 +62,10 @@
 ---
 
 
+
+## 조판 서체
+본문과 쪽번호는 **KoPub바탕 Light**(한국출판인회의 무료 서체, 상업 출판 가능)로 조판한다. 서체 파일은 라이선스상 재배포가 금지라 저장소에 올리지 않는다(`tools/fonts/`는 `.gitignore`). 다른 컴퓨터에서 조판하려면 [한국출판인회의 배포 페이지](https://www.kopus.org/biz-electronic-font2-2/)에서 KoPub 2.0 TTF를 받아 `KoPub Batang Light.ttf`, `KoPub Batang Bold.ttf`를 `tools/fonts/`에 넣는다. 없으면 나눔명조로 대체된다.
+
 ## 베타리딩
 1~3부(70쪽) PDF와 질문 여섯 개. → [베타리딩 페이지](https://heekeunlee.github.io/where_the_dog_barks/beta.html)
 

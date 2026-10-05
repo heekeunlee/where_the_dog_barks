@@ -7,7 +7,7 @@
     python3 tools/md2pdf.py --merge 원고/1부/*.md  # 한 권으로 합본
 
 판형 : 신국판 152 x 225mm
-본문 : 나눔명조 10pt / 줄간격 19.5pt / 자간 -2% / 양쪽맞춤 / 음절 단위 줄바꿈 (쪽당 약 25행 x 31자)
+본문 : KoPub바탕 Light 10pt (없으면 나눔명조) / 줄간격 19.5pt / 자간 -2% / 양쪽맞춤 / 음절 단위 줄바꿈 (쪽당 약 25행 x 31자)
 여백 : 위 21 · 아래 28 · 안쪽 22 · 바깥 18mm (판면 112 x 176mm)
        한국 단행본 관행대로 양쪽을 맞추고 어절 중간에서도 줄을 바꾼다.
        word-break: keep-all 을 쓰면 어절이 안 쪼개져 공백이 벌어지므로 쓰지 않는다.
@@ -31,7 +31,7 @@ CSS = """
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Nanum Gothic', serif;
+  font-family: 'KoPub Batang', 'Nanum Myeongjo', 'AppleMyungjo', serif;
   font-size: 10pt;
   line-height: 1.95;         /* 줄간격 19.5pt — 쪽당 약 25행 */
   letter-spacing: -0.02em;   /* 자간 -2% */
@@ -243,6 +243,18 @@ p + p { margin-top: 0; }
   margin-top: 13mm; letter-spacing: .18em;
 }
 """
+
+# 본문 서체: KoPub바탕 Light (한국출판인회의 무료 서체, 상업 출판 가능 · 파일 재배포 금지라 저장소에 올리지 않는다).
+# tools/fonts/ 에 파일이 없으면 나눔명조로 대체된다. 받는 곳: https://www.kopus.org/biz-electronic-font2-2/
+FONT_DIR = Path(__file__).resolve().parent / "fonts"
+_FACES = [("KoPub Batang Light.ttf", 400), ("KoPub Batang Bold.ttf", 700)]
+if all((FONT_DIR / f).exists() for f, _ in _FACES):
+    CSS = "".join(
+        f"@font-face {{ font-family: 'KoPub Batang'; src: url('{(FONT_DIR / f).as_uri()}'); font-weight: {w}; }}\n"
+        for f, w in _FACES) + CSS
+else:
+    print("경고: tools/fonts/ 에 KoPub바탕이 없어 나눔명조로 조판합니다.", file=sys.stderr)
+
 
 
 def parse(md: str) -> dict:
