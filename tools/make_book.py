@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "원고" / "pdf" / "어디서_개가_짖는구나_완성본.pdf"
 TITLE = "어디서 개가 짖는구나"
 SUBTITLE = "장편소설"
+AUTHOR = "이희근"
 SRC = ROOT / "원고" / "12부"
 
 BACK_MD = ROOT / "원고" / "작가의_말.md"      # 뒷붙이. 본문 쪽번호를 이어 받는다
@@ -46,12 +47,13 @@ FRONT_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap');
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0;
-  font-family: 'Nanum Myeongjo', 'AppleMyungjo', serif; color: #111; }
+  font-family: 'KoPub Batang', 'Nanum Myeongjo', 'AppleMyungjo', serif; color: #111; }
 
 .title-page { page-break-after: always; padding-top: 78mm; text-align: center; }
 .title-page h1 { font-size: 27pt; font-weight: 400; margin: 0; letter-spacing: .06em; }
 .title-page .sub { margin-top: 14mm; font-family: 'Nanum Gothic', sans-serif;
   font-size: 9pt; font-weight: 300; color: #7a7a7a; letter-spacing: .3em; }
+.title-page .author { margin-top: 62mm; font-size: 12pt; letter-spacing: .3em; color: #222; }
 
 .blank { page-break-after: always; }
 
@@ -228,9 +230,10 @@ def build_front_html(found, pad=False) -> str:
     return "\n".join([
         "<!doctype html><html lang=ko><head><meta charset=utf-8>",
         f"<title>{html.escape(TITLE)}</title>",
-        f"<style>{FRONT_CSS}</style></head><body>",
+        f"<style>{CSS[:CSS.find('@page')]}{FRONT_CSS}</style></head><body>",
         f'<section class="title-page"><h1>{html.escape(TITLE)}</h1>'
-        f'<div class="sub">{html.escape(SUBTITLE)}</div></section>',
+        f'<div class="sub">{html.escape(SUBTITLE)}</div>'
+        f'<div class="author">{html.escape(AUTHOR)}</div></section>',
         '<section class="blank"></section>',
         '<section class="toc"><h2>차 례</h2>', *rows, "</section>",
         *(['<section class="blank" style="page-break-before:always">&#160;</section>'] if pad else []),
@@ -274,7 +277,7 @@ def main() -> None:
     toc = [[1, name if kind == "back" else f"{key} · {name}", n_front + page + 1]
            for kind, key, name, page in found]
     book.set_toc(toc)
-    book.set_metadata({"title": TITLE, "subject": SUBTITLE, "author": ""})
+    book.set_metadata({"title": TITLE, "subject": SUBTITLE, "author": AUTHOR})
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     book.subset_fonts()          # 쪽번호·하시라 서체도 쓰인 글자만 넣는다
