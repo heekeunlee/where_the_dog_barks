@@ -166,25 +166,43 @@ def render_recto(chs, back, body_html: Path, body_pdf: Path, n_front: int):
     return found, n_pages
 
 
-def stamp(pdf: Path, part_pages: set):
-    """본문 하단 중앙에 쪽번호. 백면은 건너뛴다(번호는 센다)."""
+def stamp(pdf: Path, skip: set, n_front: int = 0, found=()):
+    """쪽번호(아래 바깥쪽)와 하시라(위 바깥쪽)를 찍는다.
+
+    시중 단행본 관행: 왼쪽 면 하시라는 책 제목, 오른쪽 면은 부 제목.
+    부가 시작하는 면에는 하시라를 넣지 않는다. 백면에는 아무것도 찍지 않는다(번호는 센다).
+    """
     doc = fitz.open(pdf)
     font = fitz.Font(fontfile=SERIF) if Path(SERIF).exists() else fitz.Font("times")
-    size, y = 8.5, 225 * 72 / 25.4 - 11 * 72 / 25.4     # 아래에서 11mm
+    mm = 72 / 25.4
+    W, H = 152 * mm, 225 * mm
+    inner, outer = 22 * mm, 18 * mm
+    folio_y, head_y = H - 14 * mm, 13 * mm
+    starts = sorted((pg, name) for _, _, name, pg in found)
+    openers = {pg for pg, _ in starts}
     for i in range(doc.page_count):
-        if i in part_pages:
+        if i in skip:
             continue
         page = doc[i]
         # Chrome 이 만든 스트림은 0.24배 cm 스케일을 걸고 복원하지 않는다.
-        # 감싸 두지 않으면 덧붙인 쪽번호가 그 스케일을 물려받아 2pt 로 찍힌다.
+        # 감싸 두지 않으면 덧붙인 글자가 그 스케일을 물려받아 2pt 로 찍힌다.
         try:
             page.wrap_contents()
         except AttributeError:
             page.clean_contents()
-        txt = str(i + 1)
-        w = font.text_length(txt, size)
+        recto = (n_front + i + 1) % 2 == 1          # 오른쪽 면
         tw = fitz.TextWriter(page.rect, color=(.42, .42, .42))
-        tw.append(fitz.Point((page.rect.width - w) / 2, y), txt, font=font, fontsize=size)
+        txt, size = str(i + 1), 8
+        w = font.text_length(txt, size)
+        x = W - outer - w if recto else outer
+        tw.append(fitz.Point(x, folio_y), txt, font=font, fontsize=size)
+        if i not in openers:
+            part = [n for pg, n in starts if pg <= i]
+            head = (part[-1] if part else TITLE) if recto else TITLE
+            hs = 7
+            hw = font.text_length(head, hs)
+            hx = W - outer - hw if recto else outer
+            tw.append(fitz.Point(hx, head_y), head, font=font, fontsize=hs)
         tw.write_text(page)
     doc.saveIncr()
     doc.close()
@@ -242,7 +260,7 @@ def main() -> None:
     doc = fitz.open(body_pdf)
     blanks = [i for i in range(doc.page_count) if not doc[i].get_text().strip()]
     doc.close()
-    stamp(body_pdf, set(blanks))
+    stamp(body_pdf, set(blanks), n_front=n_front, found=found)
 
     front_html.write_text(build_front_html(found, pad), encoding="utf-8")
     to_pdf(front_html.resolve(), front_pdf.resolve())

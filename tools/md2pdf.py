@@ -7,7 +7,8 @@
     python3 tools/md2pdf.py --merge 원고/1부/*.md  # 한 권으로 합본
 
 판형 : 신국판 152 x 225mm
-본문 : 나눔명조 10.5pt / 행간 1.9 / 양쪽맞춤 / 음절 단위 줄바꿈
+본문 : 나눔명조 10pt / 줄간격 19.5pt / 자간 -2% / 양쪽맞춤 / 음절 단위 줄바꿈 (쪽당 약 25행 x 31자)
+여백 : 위 21 · 아래 28 · 안쪽 22 · 바깥 18mm (판면 112 x 176mm)
        한국 단행본 관행대로 양쪽을 맞추고 어절 중간에서도 줄을 바꾼다.
        word-break: keep-all 을 쓰면 어절이 안 쪼개져 공백이 벌어지므로 쓰지 않는다.
 의존 : Chrome (헤드리스 인쇄). 별도 설치 불필요.
@@ -21,18 +22,19 @@ from pathlib import Path
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 CSS = """
-@page { size: 152mm 225mm; margin: 20mm 16mm 18mm; }
-/* 무선제본 대비 — 안쪽(책등) 19mm / 바깥 14mm. 1면이 오른쪽 면이다 */
-@page :right { margin-left: 19mm; margin-right: 14mm; }
-@page :left  { margin-left: 14mm; margin-right: 19mm; }
+@page { size: 152mm 225mm; margin: 21mm 18mm 28mm; }
+/* 시중 신국판 소설 기준 — 위 21 / 아래 28 / 안쪽(책등) 22 / 바깥 18mm. 판면 112 x 176mm. 1면이 오른쪽 면이다 */
+@page :right { margin-left: 22mm; margin-right: 18mm; }
+@page :left  { margin-left: 18mm; margin-right: 22mm; }
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Nanum+Gothic:wght@400;700;800&display=swap');
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
   font-family: 'Nanum Myeongjo', 'AppleMyungjo', 'Nanum Gothic', serif;
-  font-size: 10.5pt;
-  line-height: 2.1;
+  font-size: 10pt;
+  line-height: 1.95;         /* 줄간격 19.5pt — 쪽당 약 25행 */
+  letter-spacing: -0.02em;   /* 자간 -2% */
   color: #111;
   text-align: justify;
   text-justify: inter-character;
